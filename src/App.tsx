@@ -65,7 +65,7 @@ function App() {
                 list: '/classes',
                 create: '/classes/create',
                 edit: '/classes/edit/:id',
-                show: '/classes/details/:id',
+                show: '/classes/show/:id',
                 meta: {
                   label: 'Classes',
                   icon: '🏫',
