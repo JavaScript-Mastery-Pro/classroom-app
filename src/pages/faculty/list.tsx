@@ -9,11 +9,158 @@ import {
 } from '@/components/ui/select';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { useMemo, useState } from 'react';
+import { User } from '@/types';
+import { useTable } from '@refinedev/react-table';
+import { ColumnDef } from '@tanstack/react-table';
+import { DataTable } from '@/components/refine-ui/data-table/data-table';
+import { DataTableSorter } from '@/components/refine-ui/data-table/data-table-sorter';
+import { cn } from '@/lib/utils';
+import { AdvancedImage } from '@cloudinary/react';
+import { profilePhoto } from '@/lib/cloudinary';
+import { ShowButton } from '@/components/refine-ui/buttons/show';
 
 export const FacultyList = () => {
   const [globalFilter, setGlobalFilter] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('all');
+
+  const columns = useMemo<ColumnDef<User>[]>(
+    () => [
+      {
+        id: 'imageCldPubId',
+        accessorKey: 'imageCldPubId',
+        size: 80,
+        header: ({ column }) => (
+          <div className='flex ml-2 items-center gap-1'>
+            <span>Profile</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const value = getValue<string>();
+          return (
+            <AdvancedImage
+              className='ml-2 w-10 my-1 h-10 rounded-full border-2 border-orange-500'
+              cldImg={profilePhoto(value)}
+              alt={value}
+            />
+          );
+        },
+      },
+      {
+        id: 'name',
+        accessorKey: 'name',
+        size: 200,
+        header: ({ column }) => (
+          <div className='flex items-center gap-1'>
+            <span>Name</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const name = getValue<string>();
+          return (
+            <span className='capitalize text-foreground font-bold text-sm'>
+              {name}
+            </span>
+          );
+        },
+        filterFn: 'includesString',
+      },
+      {
+        id: 'email',
+        accessorKey: 'email',
+        size: 250,
+        header: ({ column }) => (
+          <div className='flex items-center gap-1'>
+            <span>Email</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const email = getValue<string>();
+          return <span className='text-foreground font-medium'>{email}</span>;
+        },
+        filterFn: 'includesString',
+      },
+      {
+        id: 'role',
+        accessorKey: 'role',
+        size: 120,
+        header: ({ column }) => (
+          <div className='flex items-center gap-1'>
+            <span>Role</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const role = getValue<string>();
+          return (
+            <Badge
+              variant={role === 'admin' ? 'default' : 'secondary'}
+              className={cn(
+                'capitalize p-1 px-2 font-bold text-xs',
+                role === 'admin'
+                  ? 'bg-orange-600 text-white border-0'
+                  : 'bg-teal-500 text-white'
+              )}
+            >
+              {role}
+            </Badge>
+          );
+        },
+      },
+      {
+        id: 'department',
+        accessorKey: 'department',
+        size: 180,
+        header: ({ column }) => (
+          <div className='flex items-center gap-1'>
+            <span>Department</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const value = getValue<string>();
+          return (
+            <span className='text-foreground font-medium'>
+              {value || 'N/A'}
+            </span>
+          );
+        },
+      },
+      {
+        id: 'actions',
+        size: 100,
+        header: 'Actions',
+        cell: ({ row }) => (
+          <div
+            className='flex items-center gap-2'
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ShowButton
+              resource='users'
+              recordItemId={row.original.id}
+              size='sm'
+              variant='outline'
+            >
+              View
+            </ShowButton>
+          </div>
+        ),
+        enableSorting: false,
+      },
+    ],
+    []
+  );
+
+  const table = useTable<User>({
+    columns,
+    refineCoreProps: {
+      resource: 'users',
+    },
+  });
 
   const handleSearch = (value: string) => {
     setGlobalFilter(value);
@@ -65,10 +212,8 @@ export const FacultyList = () => {
         </div>
       </div>
 
-      <div className='flex items-center justify-center h-[300px]'>
-        <h3 className='text-5xl font-bold text-gray-400/30 tracking-tight'>
-          Faculty Table
-        </h3>
+      <div className='w-full'>
+        <DataTable table={table} />
       </div>
     </ListView>
   );
