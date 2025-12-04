@@ -8,14 +8,45 @@ const apiClient = axios.create({
 });
 
 export const dataProvider: DataProvider = {
-  getList: async ({ resource, pagination }) => {
+  getList: async ({ resource, pagination, filters }) => {
     const {  pageSize = 10 } = pagination ?? {};
 
+    // Build query parameters
+    const params: Record<string, string | number> = {
+      _page: 1,
+      _limit: pageSize
+    };
+
+    // Handle custom filters for users resource
+    if (resource === 'users' && filters) {
+      const roleFilters: string[] = [];
+      let searchQuery = '';
+
+      filters.forEach((filter) => {
+        if ('field' in filter && 'value' in filter) {
+          if (filter.field === 'role' && filter.value) {
+            roleFilters.push(String(filter.value));
+          }
+          if (filter.field === 'name' && filter.value) {
+            searchQuery = String(filter.value);
+          }
+        }
+      });
+
+      if (roleFilters.length > 0) {
+        params.roles = roleFilters.join(',');
+      }
+      
+      if (searchQuery) {
+        params.searchQuery = searchQuery;
+      }
+    }
+
     const response = await apiClient.get(`/${resource}`, {
-      params: { _page: 1, _limit: pageSize },
+      params,
     });
     const total = response.headers["x-total-count"] ?? response.data.length;
-    
+
     return {success: true, data: response.data , total };
   },
 

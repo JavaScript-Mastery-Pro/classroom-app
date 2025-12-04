@@ -159,6 +159,25 @@ export const FacultyList = () => {
     columns,
     refineCoreProps: {
       resource: 'users',
+      filters: {
+        permanent: [
+          // Always filter for teachers and admins, unless a specific role is selected
+          {
+            field: 'role',
+            operator: 'eq' as const,
+            value: roleFilter === 'all' ? 'teacher,admin' : roleFilter,
+          },
+          ...(globalFilter
+            ? [
+                {
+                  field: 'name',
+                  operator: 'contains' as const,
+                  value: globalFilter,
+                },
+              ]
+            : []),
+        ],
+      },
     },
   });
 
@@ -185,7 +204,7 @@ export const FacultyList = () => {
           <div className='flex flex-col gap-3 sm:flex-row sm:gap-2 w-full sm:w-auto'>
             {/* Search Input */}
             <div className='relative max-h-9 w-full md:max-w-72'>
-              <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+              <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-600' />
               <Input
                 type='text'
                 placeholder='Search by name...'
@@ -198,13 +217,13 @@ export const FacultyList = () => {
             {/* Filter Row */}
             <div className='flex gap-2 w-full sm:w-auto'>
               <Select value={roleFilter} onValueChange={handleRoleFilter}>
-                <SelectTrigger className='flex-1 bg-white sm:flex-initial sm:w-[160px] h-11'>
+                <SelectTrigger className='flex-1 text-orange-700 bg-white sm:flex-initial sm:w-[160px] h-11'>
                   <SelectValue placeholder='Filter by role' />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value='all'>All Roles</SelectItem>
-                  <SelectItem value='Teacher'>Teacher</SelectItem>
-                  <SelectItem value='Admin'>Admin</SelectItem>
+                  <SelectItem value='teacher'>Teacher</SelectItem>
+                  <SelectItem value='admin'>Admin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -212,7 +231,8 @@ export const FacultyList = () => {
         </div>
       </div>
 
-      <div className='w-full'>
+      <div className='w-full relative'>
+        <div className='absolute -top-1.5 rounded-t-md left-0 right-0 h-2 bg-gradient-orange' />
         <DataTable table={table} />
       </div>
     </ListView>
