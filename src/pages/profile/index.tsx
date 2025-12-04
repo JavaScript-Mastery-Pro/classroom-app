@@ -22,10 +22,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { FileUploader } from '@/components/refine-ui/form/file-uploader';
+import { UserRole } from '@/types';
 
 const profileSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
+  role: z.nativeEnum(UserRole),
   image: z.string().optional(),
 });
 
@@ -43,6 +45,7 @@ export const ProfilePage = () => {
       name: user?.name || '',
       email: user?.email || '',
       image: user?.image || '',
+      role: user?.role || UserRole.STUDENT,
     },
   });
 

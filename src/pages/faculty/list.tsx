@@ -30,14 +30,14 @@ export const FacultyList = () => {
         <h1 className='text-4xl font-bold text-foreground tracking-tight'>
           Faculty
         </h1>
-        <div className='flex justify-between'>
+        <div className='flex flex-col gap-5 lg:flex-row justify-between'>
           <p className='mt-2'>
             Quick access to essential metrics and management tools.
           </p>
 
           <div className='flex flex-col gap-3 sm:flex-row sm:gap-2 w-full sm:w-auto'>
             {/* Search Input */}
-            <div className='relative w-full md:max-w-72'>
+            <div className='relative max-h-9 w-full md:max-w-72'>
               <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
               <Input
                 type='text'
