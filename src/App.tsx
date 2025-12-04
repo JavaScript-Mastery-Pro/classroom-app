@@ -110,10 +110,8 @@ function App() {
                   element={<NavigateToResource fallbackTo='/dashboard' />}
                 />
 
-                {/* Dashboard */}
                 <Route path='/dashboard' element={<Dashboard />} />
 
-                {/* Profile */}
                 <Route path='/profile' element={<ProfilePage />} />
 
                 <Route path='faculty'>
@@ -133,7 +131,6 @@ function App() {
                   {/* <Route path="edit/:id" element={<ClassesEdit />} /> */}
                 </Route>
 
-                {/* Profile */}
                 <Route path='/join-classes' element={<JoinClassesList />} />
 
                 {/* Refine resource routes */}
