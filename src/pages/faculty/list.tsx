@@ -238,7 +238,7 @@ export const FacultyList = () => {
       </div>
 
       <Card className='w-full px-4 relative'>
-        <div className='absolute top-0 rounded-t-md left-0 right-0 h-2 bg-gradient-orange' />
+        <div className='absolute top-0 rounded-t-lg left-0 right-0 h-2 bg-gradient-orange' />
         <DataTable table={table} />
       </Card>
     </ListView>

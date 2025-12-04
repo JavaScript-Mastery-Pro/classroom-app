@@ -122,7 +122,7 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div className='py-8 flex items-center size-full px-4'>
+    <div className='py-8 flex items-center w-full px-4'>
       <Card className='max-w-xl w-full mx-auto relative overflow-hidden bg-gray-0 border-0'>
         <div className='absolute top-0 left-0 right-0 h-2 bg-gradient-orange' />
 
@@ -195,7 +195,7 @@ export const ProfilePage = () => {
                   </FormItem>
                 )}
               />
-              <div className='grid grid-cols-2 gap-4'>
+              <div className='grid sm:grid-cols-2 gap-4'>
                 <div className='space-y-2'>
                   <FormLabel className='text-gray-900 font-semibold'>
                     Email

@@ -101,7 +101,7 @@ export const SubjectsCreate = () => {
         <h1 className='text-4xl font-bold text-foreground tracking-tight'>
           Create Subject
         </h1>
-        <div className='flex flex-col gap-5 lg:flex-row justify-between'>
+        <div className='flex flex-col gap-5 md:flex-row justify-between'>
           <p className='mt-2'>
             Provide the required information below to add a subject.
           </p>
@@ -112,7 +112,7 @@ export const SubjectsCreate = () => {
         </div>
         <Separator />
 
-        <div className='my-8 pt-5 flex items-center  px-4'>
+        <div className='my-8 pt-5 flex items-center'>
           <Card className='max-w-4xl gap-2 w-full mx-auto relative overflow-hidden bg-gray-0 border-0'>
             <div className='absolute top-0 left-0 right-0 h-2 bg-gradient-orange' />
 
@@ -151,7 +151,7 @@ export const SubjectsCreate = () => {
                     )}
                   />
 
-                  <div className='grid grid-cols-2 gap-4'>
+                  <div className='grid sm:grid-cols-2 gap-4'>
                     <FormField
                       control={form.control}
                       name='code'
