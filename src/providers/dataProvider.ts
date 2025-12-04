@@ -9,45 +9,39 @@ const apiClient = axios.create({
 
 export const dataProvider: DataProvider = {
   getList: async ({ resource, pagination, filters }) => {
-    const {  pageSize = 10 } = pagination ?? {};
+    const page = pagination?.currentPage ?? 1;
+    const pageSize = pagination?.pageSize ?? 10;
 
-    // Build query parameters
     const params: Record<string, string | number> = {
-      _page: 1,
-      _limit: pageSize
+      page,
+      limit: pageSize
     };
 
-    // Handle custom filters for users resource
-    if (resource === 'users' && filters) {
-      const roleFilters: string[] = [];
-      let searchQuery = '';
+    // Apply filters based on resource type
+    filters?.forEach((filter) => {
+      if ('field' in filter && 'value' in filter && filter.value) {
+        const field = filter.field;
+        const value = String(filter.value);
 
-      filters.forEach((filter) => {
-        if ('field' in filter && 'value' in filter) {
-          if (filter.field === 'role' && filter.value) {
-            roleFilters.push(String(filter.value));
-          }
-          if (filter.field === 'name' && filter.value) {
-            searchQuery = String(filter.value);
-          }
+        if (resource === 'users') {
+          if (field === 'role') params.roles = value;
+          if (field === 'name') params.searchQuery = value;
+        } 
+        
+        if (resource === 'subjects') {
+          if (field === 'department') params.department = value;
+          if (field === 'name') params.searchQuery = value;
         }
-      });
-
-      if (roleFilters.length > 0) {
-        params.roles = roleFilters.join(',');
       }
-
-      if (searchQuery) {
-        params.searchQuery = searchQuery;
-      }
-    }
-
-    const response = await apiClient.get(`/${resource}`, {
-      params,
     });
-    const total = response.headers["x-total-count"] ?? response.data.length;
 
-    return {success: true, data: response.data , total };
+    const response = await apiClient.get(`/${resource}`, { params });
+
+    // Extract data and total from response
+    const data = response.data.data || response.data;
+    const total = response.data.pagination?.total || data.length;
+
+    return { success: true, data, total };
   },
 
   update: async ({ resource, id, variables }) => {

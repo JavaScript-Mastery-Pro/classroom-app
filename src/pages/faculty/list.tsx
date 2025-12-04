@@ -104,7 +104,7 @@ export const FacultyList = () => {
                 'capitalize p-1 px-2 font-bold text-xs',
                 role === 'admin'
                   ? 'bg-orange-600 text-white border-0'
-                  : 'bg-teal-500 text-white'
+                  : 'bg-teal-600 text-white'
               )}
             >
               {role}
@@ -134,7 +134,7 @@ export const FacultyList = () => {
       {
         id: 'actions',
         size: 100,
-        header: 'Actions',
+        header: '',
         cell: ({ row }) => (
           <div
             className='flex font-bold items-center gap-2'
@@ -160,6 +160,10 @@ export const FacultyList = () => {
     columns,
     refineCoreProps: {
       resource: 'users',
+      pagination: {
+        pageSize: 10,
+        mode: 'server',
+      },
       filters: {
         permanent: [
           // Always filter for teachers and admins, unless a specific role is selected

@@ -48,7 +48,7 @@ export const SubjectsList = () => {
         cell: ({ getValue }) => {
           const value = getValue<string>();
           return (
-            <Badge className='ml-2 my-3 text-sm bg-orange-50 text-orange-700 border-2 border-orange-500/50 font-bold'>
+            <Badge className='ml-2 my-2 text-sm bg-orange-50 text-orange-700 border-2 border-orange-500/50 font-bold'>
               {value}
             </Badge>
           );
@@ -121,6 +121,10 @@ export const SubjectsList = () => {
     columns,
     refineCoreProps: {
       resource: 'subjects',
+      pagination: {
+        pageSize: 10,
+        mode: 'server', // Added server-side pagination
+      },
       filters: {
         permanent: [
           ...(departmentFilter !== 'all'
