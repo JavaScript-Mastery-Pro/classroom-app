@@ -357,7 +357,7 @@ export const AdminDashboard = () => {
                   className='text-[11px]'
                   nameKey='subjectName'
                 >
-                  {classesPerSubjectData.map((entry, index) => {
+                  {classesPerSubjectData.map((_, index) => {
                     return (
                       <Cell
                         key={`cell-${index}`}
