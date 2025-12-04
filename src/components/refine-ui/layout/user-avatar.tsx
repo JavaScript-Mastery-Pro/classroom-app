@@ -1,36 +1,38 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
-import { useGetIdentity } from "@refinedev/core";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+import { useGetIdentity } from '@refinedev/core';
+import { AdvancedImage } from '@cloudinary/react';
+import { profilePhoto } from '@/lib/cloudinary';
+import { User } from '@/types';
 
-type User = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  email: string;
-  avatar?: string;
-};
-
-export function UserAvatar() {
+export function UserAvatar({ size = 'small' }: { size?: 'small' | 'large' }) {
   const { data: user, isLoading: userIsLoading } = useGetIdentity<User>();
 
   if (userIsLoading || !user) {
-    return <Skeleton className={cn("h-10", "w-10", "rounded-full")} />;
+    return <Skeleton className={cn('h-10', 'w-10', 'rounded-full')} />;
   }
 
-  const { fullName, avatar } = user;
-
   return (
-    <Avatar className={cn("h-10", "w-10")}>
-      {avatar && <AvatarImage src={avatar} alt={fullName} />}
-      <AvatarFallback>{getInitials(fullName)}</AvatarFallback>
+    <Avatar
+      className={cn('cursor-pointer border-2 border-orange-500', {
+        'h-10 w-10': size === 'small',
+        'h-35 w-35 border-4': size === 'large',
+      })}
+    >
+      {user.imageCldPubId && (
+        <AdvancedImage
+          cldImg={profilePhoto(user.imageCldPubId)}
+          alt={user.name}
+        />
+      )}
+      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
     </Avatar>
   );
 }
 
-const getInitials = (name = "") => {
-  const names = name.split(" ");
+const getInitials = (name = '') => {
+  const names = name.split(' ');
   let initials = names[0].substring(0, 1).toUpperCase();
 
   if (names.length > 1) {
@@ -39,4 +41,4 @@ const getInitials = (name = "") => {
   return initials;
 };
 
-UserAvatar.displayName = "UserAvatar";
+UserAvatar.displayName = 'UserAvatar';

@@ -1,5 +1,5 @@
-import React from 'react';
+import { SignUpForm } from '@/components/refine-ui/form/sign-up-form';
 
 export const Register = () => {
-  return <div>Register</div>;
+  return <SignUpForm />;
 };

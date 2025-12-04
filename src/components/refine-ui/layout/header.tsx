@@ -3,16 +3,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import {
-  useActiveAuthProvider,
-  useLogout,
-  useRefineOptions,
-} from '@refinedev/core';
-import { LogOutIcon } from 'lucide-react';
+import { Link, useLogout } from '@refinedev/core';
+import { LogOutIcon, UserIcon } from 'lucide-react';
 
 export const Header = () => {
   const { isMobile } = useSidebar();
@@ -22,23 +19,7 @@ export const Header = () => {
 
 function DesktopHeader() {
   return (
-    <header
-      className={cn(
-        'sticky',
-        'top-0',
-        'flex',
-        'h-16',
-        'shrink-0',
-        'items-center',
-        'gap-4',
-        'border-b',
-        'border-border',
-        'bg-sidebar',
-        'pr-3',
-        'justify-end',
-        'z-40'
-      )}
-    >
+    <header className='sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b border-border bg-sidebar pr-3 justify-end z-40'>
       <UserDropdown />
     </header>
   );
@@ -47,28 +28,10 @@ function DesktopHeader() {
 function MobileHeader() {
   const { open, isMobile } = useSidebar();
 
-  const { title } = useRefineOptions();
-
   return (
-    <header
-      className={cn(
-        'sticky',
-        'top-0',
-        'flex',
-        'h-12',
-        'shrink-0',
-        'items-center',
-        'gap-2',
-        'border-b',
-        'border-border',
-        'bg-sidebar',
-        'pr-3',
-        'justify-between',
-        'z-40'
-      )}
-    >
+    <header className='sticky top-0 flex h-12 shrink-0 items-center gap-2 border-b border-border bg-sidebar pr-3 justify-between z-40'>
       <SidebarTrigger
-        className={cn('text-muted-foreground', 'rotate-180', 'ml-1', {
+        className={cn('text-muted-foreground rotate-180 ml-1', {
           'opacity-0': open,
           'opacity-100': !open || isMobile,
           'pointer-events-auto': !open || isMobile,
@@ -78,36 +41,14 @@ function MobileHeader() {
 
       <div
         className={cn(
-          'whitespace-nowrap',
-          'flex',
-          'flex-row',
-          'h-full',
-          'items-center',
-          'justify-start',
-          'gap-2',
-          'transition-discrete',
-          'duration-200',
+          'whitespace-nowrap flex flex-row h-full items-center justify-start gap-2 transition-discrete duration-200',
           {
             'pl-3': !open,
             'pl-5': open,
           }
         )}
       >
-        <div>{title.icon}</div>
-        <h2
-          className={cn(
-            'text-sm',
-            'font-bold',
-            'transition-opacity',
-            'duration-200',
-            {
-              'opacity-0': !open,
-              'opacity-100': open,
-            }
-          )}
-        >
-          {title.text}
-        </h2>
+        <UserDropdown />
       </div>
     </header>
   );
@@ -116,27 +57,27 @@ function MobileHeader() {
 const UserDropdown = () => {
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
-  const authProvider = useActiveAuthProvider();
-
-  if (!authProvider?.getIdentity) {
-    return null;
-  }
-
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className='rounded-full focus:outline-none'>
         <UserAvatar />
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
+        <DropdownMenuItem asChild>
+          <Link to='/profile' className='cursor-pointer'>
+            <UserIcon />
+            <span>Profile</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
             logout();
           }}
+          className='cursor-pointer'
         >
-          <LogOutIcon
-            className={cn('text-destructive', 'hover:text-destructive')}
-          />
-          <span className={cn('text-destructive', 'hover:text-destructive')}>
+          <LogOutIcon className='text-destructive hover:text-destructive' />
+          <span className='text-destructive hover:text-destructive'>
             {isLoggingOut ? 'Logging out...' : 'Logout'}
           </span>
         </DropdownMenuItem>

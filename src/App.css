@@ -43,6 +43,43 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   --font-sans: "Inter", sans-serif;
+
+  /* Custom Gray Colors */
+  --color-gray-0: var(--gray-0);
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-900: var(--gray-900);
+
+  /* Custom Blue Colors */
+  --color-blue-100: var(--blue-100);
+  --color-blue-300: var(--blue-300);
+  --color-blue-400: var(--blue-400);
+  --color-blue-500: var(--blue-500);
+  --color-blue-600: var(--blue-600);
+  --color-blue-700: var(--blue-700);
+
+  /* Custom Red Colors */
+  --color-red-50: var(--red-50);
+  --color-red-500: var(--red-500);
+
+  /* Custom Orange Colors */
+  --color-orange-30: var(--orange-30);
+  --color-orange-50: var(--orange-50);
+  --color-orange-100: var(--orange-100);
+  --color-orange-400: var(--orange-400);
+  --color-orange-500: var(--orange-500);
+  --color-orange-600: var(--orange-600);
+
+  /* Custom Teal Colors */
+  --color-teal-50: var(--teal-50);
+  --color-teal-100: var(--teal-100);
+  --color-teal-500: var(--teal-500);
+  --color-teal-700: var(--teal-700);
 }
 
 :root {
@@ -131,4 +168,144 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer utilities {
+  /* Text Gradients */
+  .text-gradient-orange {
+    @apply bg-gradient-to-br from-orange-600 to-orange-500 bg-clip-text text-transparent;
+  }
+
+  /* Background Gradients - Orange */
+  .bg-gradient-orange {
+    background: linear-gradient(90deg, var(--orange-600), var(--orange-500));
+  }
+
+  .bg-gradient-orange-diagonal {
+    background: linear-gradient(135deg, var(--orange-600) 0%, var(--orange-500) 100%);
+  }
+
+  .bg-gradient-orange-light {
+    background: linear-gradient(135deg, var(--orange-50) 0%, var(--orange-100) 100%);
+  }
+
+  /* Background Gradients - Teal */
+  .bg-gradient-teal {
+    background: linear-gradient(135deg, var(--teal-500) 0%, var(--teal-700) 100%);
+  }
+
+  .bg-gradient-teal-light {
+    background: linear-gradient(135deg, var(--teal-50) 0%, var(--teal-100) 100%);
+  }
+
+  /* Background Gradients - Blue */
+  .bg-gradient-blue-light {
+    background: linear-gradient(90deg, #e0f2fe, #3b82f6);
+  }
+
+  .bg-gradient-blue-medium {
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+  }
+
+  .bg-gradient-blue-deep {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  }
+
+  .bg-gradient-blue-dark {
+    background: linear-gradient(90deg, #1d4ed8, #1e40af);
+  }
+
+  .bg-gradient-blue-ultra {
+    background: linear-gradient(90deg, #1e40af, #1e3a8a);
+  }
+
+  /* Grain Texture */
+  .grain-texture {
+    position: relative;
+    background-color: #f6f4f0;
+  }
+
+  .grain-texture::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1300 1300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .grain-texture > * {
+    position: relative;
+    z-index: 2;
+  }
+
+   /* Grain Texture Light*/
+  .grain-texture-light {
+    position: relative;
+    background-color: #fffefb;
+  }
+
+  .grain-texture-light::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1300 1300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .grain-texture-light > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+/* Custom Color Palette */
+:root {
+  /* Gray Scale */
+  --gray-0: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #e0f2fe;
+  --gray-400: #6b7280;
+  --gray-500: #4b5563;
+  --gray-600: #333333;
+  --gray-900: #171717;
+
+  /* Blue Scale */
+  --blue-100: #e0f2fe;
+  --blue-300: #3b82f6;
+  --blue-400: #2563eb;
+  --blue-500: #1d4ed8;
+  --blue-600: #1e40af;
+  --blue-700: #1e3a8a;
+
+  /* Red Scale */
+  --red-50: #ffffff;
+  --red-500: #ef4444;
+
+  /* Orange Scale */
+  --orange-30: #f6f4f0;
+  --orange-50: #fff5f0;
+  --orange-100: #ffe8e0;
+  --orange-400: #ffb900;
+  --orange-500: #fe9a00;
+  --orange-600: #f54900;
+
+  /* Teal Scale */
+  --teal-50: #e6f7f6;
+  --teal-100: #d1f0ed;
+  --teal-500: #009689;
+  --teal-700: #104e64;
 }
