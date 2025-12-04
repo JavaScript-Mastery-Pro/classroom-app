@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { AdvancedImage } from '@cloudinary/react';
 import { profilePhoto } from '@/lib/cloudinary';
 import { ShowButton } from '@/components/refine-ui/buttons/show';
+import { Card } from '@/components/ui/card';
 
 export const FacultyList = () => {
   const [globalFilter, setGlobalFilter] = useState('');
@@ -32,7 +33,7 @@ export const FacultyList = () => {
         accessorKey: 'imageCldPubId',
         size: 80,
         header: ({ column }) => (
-          <div className='flex ml-2 items-center gap-1'>
+          <div className='flex font-bold ml-2 items-center gap-1'>
             <span>Profile</span>
             <DataTableSorter column={column} />
           </div>
@@ -53,7 +54,7 @@ export const FacultyList = () => {
         accessorKey: 'name',
         size: 200,
         header: ({ column }) => (
-          <div className='flex items-center gap-1'>
+          <div className='flex font-bold items-center gap-1'>
             <span>Name</span>
             <DataTableSorter column={column} />
           </div>
@@ -73,7 +74,7 @@ export const FacultyList = () => {
         accessorKey: 'email',
         size: 250,
         header: ({ column }) => (
-          <div className='flex items-center gap-1'>
+          <div className='flex font-bold items-center gap-1'>
             <span>Email</span>
             <DataTableSorter column={column} />
           </div>
@@ -89,7 +90,7 @@ export const FacultyList = () => {
         accessorKey: 'role',
         size: 120,
         header: ({ column }) => (
-          <div className='flex items-center gap-1'>
+          <div className='flex font-bold items-center gap-1'>
             <span>Role</span>
             <DataTableSorter column={column} />
           </div>
@@ -116,7 +117,7 @@ export const FacultyList = () => {
         accessorKey: 'department',
         size: 180,
         header: ({ column }) => (
-          <div className='flex items-center gap-1'>
+          <div className='flex font-bold items-center gap-1'>
             <span>Department</span>
             <DataTableSorter column={column} />
           </div>
@@ -136,7 +137,7 @@ export const FacultyList = () => {
         header: 'Actions',
         cell: ({ row }) => (
           <div
-            className='flex items-center gap-2'
+            className='flex font-bold items-center gap-2'
             onClick={(e) => e.stopPropagation()}
           >
             <ShowButton
@@ -192,10 +193,11 @@ export const FacultyList = () => {
   return (
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
-      <div className='mb-8'>
+      <div className='space-y-4 mb-6'>
         <h1 className='text-4xl font-bold text-foreground tracking-tight'>
           Faculty
         </h1>
+
         <div className='flex flex-col gap-5 lg:flex-row justify-between'>
           <p className='mt-2'>
             Quick access to essential metrics and management tools.
@@ -217,7 +219,7 @@ export const FacultyList = () => {
             {/* Filter Row */}
             <div className='flex gap-2 w-full sm:w-auto'>
               <Select value={roleFilter} onValueChange={handleRoleFilter}>
-                <SelectTrigger className='flex-1 text-orange-700 bg-white sm:flex-initial sm:w-[160px] h-11'>
+                <SelectTrigger className='flex-1 text-orange-600 bg-white sm:flex-initial sm:w-[160px] h-11'>
                   <SelectValue placeholder='Filter by role' />
                 </SelectTrigger>
                 <SelectContent>
@@ -231,10 +233,10 @@ export const FacultyList = () => {
         </div>
       </div>
 
-      <div className='w-full relative'>
-        <div className='absolute -top-1.5 rounded-t-md left-0 right-0 h-2 bg-gradient-orange' />
+      <Card className='w-full px-4 relative'>
+        <div className='absolute top-0 rounded-t-md left-0 right-0 h-2 bg-gradient-orange' />
         <DataTable table={table} />
-      </div>
+      </Card>
     </ListView>
   );
 };

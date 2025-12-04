@@ -20,6 +20,33 @@ export const ROLE_OPTIONS = [
   },
 ];
 
+export const DEPARTMENTS = [
+  'Computer Science',
+  'Mathematics',
+  'Physics',
+  'Chemistry',
+  'Biology',
+  'English',
+  'History',
+  'Geography',
+  'Economics',
+  'Business Administration',
+  'Engineering',
+  'Psychology',
+  'Sociology',
+  'Political Science',
+  'Philosophy',
+  'Education',
+  'Fine Arts',
+  'Music',
+  'Physical Education',
+  'Law',
+] as const;
+
+export const DEPARTMENT_OPTIONS = DEPARTMENTS.map((dept) => ({
+  value: dept,
+  label: dept,
+}));
 
 export const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3MB in bytes
 export const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];

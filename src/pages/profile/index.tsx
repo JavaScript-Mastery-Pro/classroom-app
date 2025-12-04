@@ -56,8 +56,8 @@ export const ProfilePage = () => {
 
   const onSubmit = async (values: ProfileFormValues) => {
     if (!user?.id) return;
+
     try {
-      console.log('User', user);
       if (profile?.length > 0) {
         const formData = new FormData();
         formData.append('file', profile?.[0]);
@@ -112,7 +112,7 @@ export const ProfilePage = () => {
         },
         {
           onSuccess: () => {
-            invalidate({ resource: 'getUserIdentity', invalidates: ['all'] });
+            invalidate({ resource: 'users', invalidates: ['all'] });
           },
         }
       );

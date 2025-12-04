@@ -36,7 +36,7 @@ export const dataProvider: DataProvider = {
       if (roleFilters.length > 0) {
         params.roles = roleFilters.join(',');
       }
-      
+
       if (searchQuery) {
         params.searchQuery = searchQuery;
       }
@@ -50,7 +50,7 @@ export const dataProvider: DataProvider = {
     return {success: true, data: response.data , total };
   },
 
-    update: async ({ resource, id, variables }) => {
+  update: async ({ resource, id, variables }) => {
     const response = await apiClient.put(`/${resource}/${id}`, variables);
     localStorage.setItem('user', JSON.stringify(response.data[0]));
     return { success: true, data: response.data[0] };
@@ -63,7 +63,7 @@ export const dataProvider: DataProvider = {
 
   create: async ({ resource, variables }) => {
     const response = await apiClient.post(`/${resource}`, variables);
-    return { success: true, data: response.data };
+    return { success: true, data: response.data[0], redirectTo: `/${resource}` };
   },
 
   deleteOne: async ({ resource, id }) => {

@@ -34,7 +34,7 @@ export const ClassesList = () => {
   return (
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
-      <div className='mb-8'>
+      <div className='space-y-4 mb-6'>
         <h1 className='text-4xl font-bold text-foreground tracking-tight'>
           Classes
         </h1>
@@ -46,7 +46,7 @@ export const ClassesList = () => {
           <div className='flex flex-col gap-3 sm:flex-row sm:gap-2 w-full sm:w-auto'>
             {/* Search Input */}
             <div className='relative max-h-9 w-full md:max-w-72'>
-              <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+              <Search className='absolute left-3 text-orange-600 top-1/2 -translate-y-1/2 h-4 w-4' />
               <Input
                 type='text'
                 placeholder='Search by name...'
@@ -59,7 +59,7 @@ export const ClassesList = () => {
             {/* Filter and Create Button Row */}
             <div className='flex gap-2 w-full sm:w-auto'>
               <Select value={subjectFilter} onValueChange={handleSubjectFilter}>
-                <SelectTrigger className='flex-1 bg-white sm:flex-initial sm:w-[180px] h-11'>
+                <SelectTrigger className='flex-1 bg-white text-orange-600 sm:flex-initial sm:w-[180px] h-11'>
                   <SelectValue placeholder='Filter by subject' />
                 </SelectTrigger>
                 <SelectContent>

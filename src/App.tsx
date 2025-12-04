@@ -19,6 +19,7 @@ import { authProvider } from './providers/authProvider';
 import { ProfilePage } from './pages/profile';
 import { FacultyList } from './pages/faculty/list';
 import { SubjectsList } from './pages/subjects/list';
+import { SubjectsCreate } from './pages/subjects/create';
 import { ClassesList } from './pages/classes/list';
 import { JoinClassesList } from './pages/join-classes';
 import { dataProvider } from './providers/dataProvider';
@@ -123,7 +124,7 @@ function App() {
 
                 <Route path='subjects'>
                   <Route index element={<SubjectsList />} />
-                  {/* <Route path="create" element={<SubjectsCreate />} /> */}
+                  <Route path='create' element={<SubjectsCreate />} />
                   {/* <Route path="edit/:id" element={<SubjectsEdit />} /> */}
                 </Route>
 
