@@ -26,7 +26,7 @@ export const FacultyList = () => {
   return (
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
-      <div className='mb-3'>
+      <div className='mb-8'>
         <h1 className='text-4xl font-bold text-foreground tracking-tight'>
           Faculty
         </h1>

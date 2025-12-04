@@ -37,7 +37,7 @@ import { toast } from 'sonner';
 const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
-  fullName: z.string().min(3, 'Full name must be at least 3 characters'),
+  name: z.string().min(3, 'Full name must be at least 3 characters'),
   role: z.nativeEnum(UserRole),
   image: z.string().optional(),
 });
@@ -55,7 +55,7 @@ export const SignUpForm = () => {
     defaultValues: {
       email: '',
       password: '',
-      fullName: '',
+      name: '',
       role: UserRole.STUDENT,
       image: '',
     },
@@ -89,7 +89,7 @@ export const SignUpForm = () => {
         register(
           {
             ...values,
-            name: values.fullName,
+            name: values.name,
             image: uploadedImage.url,
             imageCldPubId: uploadedImage.public_id,
           },
@@ -109,29 +109,29 @@ export const SignUpForm = () => {
             },
           }
         );
-      } else {
-        register(
-          {
-            ...values,
-            name: values.fullName,
-          },
-          {
-            onSuccess: (data) => {
-              if (data.success === false) {
-                toast.error(data.error?.message, {
-                  richColors: true,
-                });
-                return;
-              }
+      }
 
-              toast.success('Account created successfully!', {
+      register(
+        {
+          ...values,
+          name: values.name,
+        },
+        {
+          onSuccess: (data) => {
+            if (data.success === false) {
+              toast.error(data.error?.message, {
                 richColors: true,
               });
-              form.reset();
-            },
-          }
-        );
-      }
+              return;
+            }
+
+            toast.success('Account created successfully!', {
+              richColors: true,
+            });
+            form.reset();
+          },
+        }
+      );
     } catch (error) {
       console.error('Registration error:', error);
       toast.error('Registration failed', {
@@ -214,13 +214,13 @@ export const SignUpForm = () => {
                   files={profile}
                   onChange={setProfile}
                   type='profile'
-                  maxSizeText='PNG, JPG up to 5MB'
+                  maxSizeText='PNG, JPG up to 3MB'
                 />
               </div>
 
               <FormField
                 control={form.control}
-                name='fullName'
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-gray-900 font-semibold'>

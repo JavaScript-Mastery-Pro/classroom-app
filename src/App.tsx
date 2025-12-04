@@ -21,6 +21,7 @@ import { FacultyList } from './pages/faculty/list';
 import { SubjectsList } from './pages/subjects/list';
 import { ClassesList } from './pages/classes/list';
 import { JoinClassesList } from './pages/join-classes';
+import { dataProvider } from './providers/dataProvider';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Refine
             routerProvider={routerProvider}
             authProvider={authProvider}
+            dataProvider={dataProvider}
             resources={[
               {
                 name: 'dashboard',

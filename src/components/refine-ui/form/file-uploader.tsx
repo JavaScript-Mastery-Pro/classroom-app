@@ -4,17 +4,14 @@ import { convertFileToUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { FileUploaderProps } from '@/types';
 import { ALLOWED_TYPES, MAX_FILE_SIZE } from '@/constants';
-import { useGetIdentity } from '@refinedev/core';
-import { UserAvatar } from '../layout/user-avatar';
 
 export const FileUploader = ({
   files,
   onChange,
   type = 'profile',
-  maxSizeText = 'PNG, JPG up to 5MB',
+  maxSizeText = 'PNG, JPG up to 3MB',
   currentImageUrl,
 }: FileUploaderProps) => {
-  const { data: user } = useGetIdentity();
   const [error, setError] = useState('');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,15 +51,11 @@ export const FileUploader = ({
           <div className='relative w-full rounded-xl border-2 border-orange-600/20 bg-gradient-to-r from-orange-50/50 to-orange-100/30 p-5'>
             <div className='flex flex-col sm:flex-row items-center gap-4'>
               <div className='relative flex-shrink-0'>
-                {user?.imageCldPubId ? (
-                  <UserAvatar size='large' />
-                ) : (
-                  <img
-                    src={previewUrl}
-                    alt='Profile preview'
-                    className='w-24 h-24 sm:w-26 sm:h-26 transition-all rounded-full object-cover border-3 border-orange-600 shadow-lg'
-                  />
-                )}
+                <img
+                  src={previewUrl}
+                  alt='Profile preview'
+                  className='w-24 h-24 sm:w-26 sm:h-26 transition-all rounded-full object-cover border-3 border-orange-600 shadow-lg'
+                />
               </div>
 
               <div className='flex-1 text-center sm:text-left'>

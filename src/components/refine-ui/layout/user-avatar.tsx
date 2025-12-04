@@ -15,9 +15,9 @@ export function UserAvatar({ size = 'small' }: { size?: 'small' | 'large' }) {
 
   return (
     <Avatar
-      className={cn('cursor-pointer border-2 border-orange-500', {
+      className={cn('border-2 border-orange-500', {
         'h-10 w-10': size === 'small',
-        'h-35 w-35 border-4': size === 'large',
+        'w-24 h-24 sm:w-26 sm:h-26 border-4': size === 'large',
       })}
     >
       {user.imageCldPubId && (
