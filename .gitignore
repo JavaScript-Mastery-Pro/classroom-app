@@ -24,3 +24,7 @@ _.ntvs_
 _.njsproj
 _.sln
 \*.sw?
+
+# local env files
+.env
+.env*.local

@@ -277,13 +277,11 @@ function SidebarHeader() {
           }
         )}
       >
-        {/* <div>{title.icon}</div> */}
-
         <img src='/assets/logo-icon.png' alt='Logo' className='h-7' />
 
         <h2
           className={cn(
-            'text-sm',
+            'text-base',
             'font-bold',
             'transition-opacity',
             'duration-200',
