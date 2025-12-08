@@ -213,47 +213,13 @@ export const ClassesShow = () => {
             🎓 Join This Class
           </h2>
           <div>
-            <p className='text-sm text-gray-700 mb-4'>
-              Share this code with students so they can join the class. Students
-              can paste this code in the app to enroll.
-            </p>
-            {/* <div className='flex flex-col  bg-gray-50 border border-gray-200 sm:flex-row items-stretch sm:items-center gap-4'>
-              <div className='flex-1 p-5 rounded-lg'>
-                <p className='text-xs font-bold text-orange-600 uppercase tracking-wider mb-2'>
-                  Class Code
-                </p>
-                <p className='text-3xl sm:text-4xl font-black text-orange-600 tracking-widest font-mono'>
-                  {classData.id}
-                </p>
-              </div>
-              <Button
-                onClick={handleCopyCode}
-                size='lg'
-                className='mr-4 bg-gradient-teal text-white hover:bg-orange-600 h-11 font-bold shadow-md hover:shadow-lg transition-all'
-              >
-                {copied ? (
-                  <>
-                    <Check className='h-5 w-5 mr-2' />
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy className='h-5 w-5 mr-2' />
-                    Copy Code
-                  </>
-                )}
-              </Button>
-            </div> */}
             <div className='mt-2 p-4 bg-gray-50 border border-gray-200'>
               <p className='text-sm font-bold text-gray-900 mb-2 flex items-center gap-2'>
                 📋 Instructions for Students:
               </p>
               <ol className='text-sm text-gray-700 space-y-1.5 list-decimal list-inside ml-2'>
-                <li>Copy the class code above</li>
-                <li>
-                  Go to the &quot;Join Class&quot; section in your student
-                  dashboard
-                </li>
+                <li>Ask your teacher for the invite code.</li>
+                <li>Click on &quot;Join Class&quot; button.</li>
                 <li>Paste the code and click &quot;Join&quot;</li>
               </ol>
             </div>
