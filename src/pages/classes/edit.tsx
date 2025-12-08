@@ -609,35 +609,21 @@ export const ClassesEdit = () => {
                     </Button>
                   </ConfirmationModal>
 
-                  <div className='flex gap-2 flex-col-reverse sm:flex-row'>
-                    <Button
-                      type='button'
-                      size='lg'
-                      disabled={isSubmitting || isPending}
-                      onClick={() => {
-                        reset();
-                        setSchedules(classData?.schedules || []);
-                      }}
-                      className='max-sm:w-full h-12 font-semibold transition-all duration-300 cursor-pointer text-white bg-gray-800'
-                    >
-                      Reset
-                    </Button>
-                    <Button
-                      type='submit'
-                      size='lg'
-                      className='max-sm:w-full h-12 font-semibold text-white shadow-lg transition-all duration-300 cursor-pointer bg-gradient-orange-diagonal'
-                      disabled={isSubmitting || isPending}
-                    >
-                      {isSubmitting ? (
-                        <div className='flex gap-1'>
-                          <span>Saving... </span>{' '}
-                          <Loader2 className='inline-block ml-2 animate-spin' />
-                        </div>
-                      ) : (
-                        'Save Changes'
-                      )}
-                    </Button>
-                  </div>
+                  <Button
+                    type='submit'
+                    size='lg'
+                    className='max-sm:w-full h-12 font-semibold text-white shadow-lg transition-all duration-300 cursor-pointer bg-gradient-orange-diagonal'
+                    disabled={isSubmitting || isPending}
+                  >
+                    {isSubmitting ? (
+                      <div className='flex gap-1'>
+                        <span>Saving... </span>{' '}
+                        <Loader2 className='inline-block ml-2 animate-spin' />
+                      </div>
+                    ) : (
+                      'Save Changes'
+                    )}
+                  </Button>
                 </section>
               </form>
             </Form>

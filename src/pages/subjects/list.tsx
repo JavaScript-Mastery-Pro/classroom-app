@@ -152,14 +152,6 @@ export const SubjectsList = () => {
     },
   });
 
-  const handleSearch = (value: string) => {
-    setGlobalFilter(value);
-  };
-
-  const handleDepartmentFilter = (value: string) => {
-    setDepartmentFilter(value);
-  };
-
   return (
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
@@ -181,7 +173,7 @@ export const SubjectsList = () => {
                 placeholder='Search by name...'
                 className='pl-10 bg-white w-full'
                 value={globalFilter}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => setGlobalFilter(e.target.value)}
               />
             </div>
 
@@ -189,7 +181,7 @@ export const SubjectsList = () => {
             <div className='flex gap-2 w-full sm:w-auto'>
               <Select
                 value={departmentFilter}
-                onValueChange={handleDepartmentFilter}
+                onValueChange={setDepartmentFilter}
               >
                 <SelectTrigger className='bg-white text-orange-600 flex-1 sm:flex-initial sm:w-[180px]'>
                   <SelectValue placeholder='Filter by department' />

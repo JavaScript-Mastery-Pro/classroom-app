@@ -158,7 +158,9 @@ export const UsersEdit = () => {
         <div className='flex items-center justify-center h-[60vh]'>
           <div className='flex flex-col items-center gap-4'>
             <Loader2 className='h-12 w-12 animate-spin text-orange-600' />
-            <p className='text-lg font-semibold text-gray-600'>Loading faculty data...</p>
+            <p className='text-lg font-semibold text-gray-600'>
+              Loading faculty data...
+            </p>
           </div>
         </div>
       </EditView>
@@ -206,9 +208,9 @@ export const UsersEdit = () => {
                 ) : (
                   <div className='relative w-full rounded-xl border-2 border-orange-600/20 bg-gradient-to-r from-orange-50/50 to-orange-100/30 p-5'>
                     <div className='flex flex-col sm:flex-row items-center gap-4'>
-                      <div className='relative flex-shrink-0'>
+                      <p className='relative flex-shrink-0'>
                         {user && <UserAvatar size='large' user={user} />}
-                      </div>
+                      </p>
 
                       <div className='flex-1 text-center sm:text-left'>
                         <p className='text-[20px] font-bold text-gray-900'>
@@ -335,36 +337,21 @@ export const UsersEdit = () => {
                     </Button>
                   </ConfirmationModal>
 
-                  <div className='flex gap-2 flex-col-reverse sm:flex-row'>
-                    <Button
-                      type='button'
-                      size='lg'
-                      disabled={isSubmitting || isPending}
-                      onClick={() => {
-                        reset();
-                        setUpdateProfile(false);
-                        setProfile([]);
-                      }}
-                      className='max-sm:w-full h-12 font-semibold transition-all duration-300 cursor-pointer text-white bg-gray-800'
-                    >
-                      Reset
-                    </Button>
-                    <Button
-                      type='submit'
-                      size='lg'
-                      className='max-sm:w-full h-12 font-semibold text-white shadow-lg transition-all duration-300 cursor-pointer bg-gradient-orange-diagonal'
-                      disabled={isSubmitting || isPending}
-                    >
-                      {isSubmitting ? (
-                        <div className='flex gap-1'>
-                          <span>Saving... </span>{' '}
-                          <Loader2 className='inline-block ml-2 animate-spin' />
-                        </div>
-                      ) : (
-                        'Save Changes'
-                      )}
-                    </Button>
-                  </div>
+                  <Button
+                    type='submit'
+                    size='lg'
+                    className='max-sm:w-full h-12 font-semibold text-white shadow-lg transition-all duration-300 cursor-pointer bg-gradient-orange-diagonal'
+                    disabled={isSubmitting || isPending}
+                  >
+                    {isSubmitting ? (
+                      <div className='flex gap-1'>
+                        <span>Saving... </span>{' '}
+                        <Loader2 className='inline-block ml-2 animate-spin' />
+                      </div>
+                    ) : (
+                      'Save Changes'
+                    )}
+                  </Button>
                 </section>
               </form>
             </Form>

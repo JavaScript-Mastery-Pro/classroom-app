@@ -33,11 +33,8 @@ export const UsersList = () => {
         id: 'imageCldPubId',
         accessorKey: 'imageCldPubId',
         size: 80,
-        header: ({ column }) => (
-          <div className='flex font-bold ml-2 items-center gap-1'>
-            <span>Profile</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold ml-2 items-center gap-1'>Profile</div>
         ),
         cell: ({ getValue }) => {
           const value = getValue<string>();
@@ -54,21 +51,17 @@ export const UsersList = () => {
         id: 'name',
         accessorKey: 'name',
         size: 200,
-        header: ({ column }) => (
-          <div className='flex font-bold items-center gap-1'>
-            <span>Name</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold items-center gap-1'>Name</div>
         ),
         cell: ({ getValue }) => {
           const name = getValue<string>();
           return (
-            <span className='capitalize text-foreground font-bold text-sm'>
+            <div className='capitalize text-foreground font-bold text-sm'>
               {name}
-            </span>
+            </div>
           );
         },
-        filterFn: 'includesString',
       },
       {
         id: 'email',
@@ -84,17 +77,13 @@ export const UsersList = () => {
           const email = getValue<string>();
           return <span className='text-foreground font-medium'>{email}</span>;
         },
-        filterFn: 'includesString',
       },
       {
         id: 'role',
         accessorKey: 'role',
         size: 120,
-        header: ({ column }) => (
-          <div className='flex font-bold items-center gap-1'>
-            <span>Role</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold items-center gap-1'>Role</div>
         ),
         cell: ({ getValue }) => {
           const role = getValue<string>();
@@ -117,19 +106,12 @@ export const UsersList = () => {
         id: 'department',
         accessorKey: 'department',
         size: 180,
-        header: ({ column }) => (
-          <div className='flex font-bold items-center gap-1'>
-            <span>Department</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold items-center gap-1'>Department</div>
         ),
         cell: ({ getValue }) => {
           const value = getValue<string>();
-          return (
-            <span className='text-foreground font-medium'>
-              {value || 'N/A'}
-            </span>
-          );
+          return <span className='text-foreground font-medium'>{value}</span>;
         },
       },
     ],
@@ -166,14 +148,6 @@ export const UsersList = () => {
     },
   });
 
-  const handleSearch = (value: string) => {
-    setGlobalFilter(value);
-  };
-
-  const handleRoleFilter = (value: string) => {
-    setRoleFilter(value);
-  };
-
   return (
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
@@ -196,13 +170,13 @@ export const UsersList = () => {
                 placeholder='Search by name...'
                 className='pl-10 bg-white w-full'
                 value={globalFilter}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => setGlobalFilter(e.target.value)}
               />
             </div>
 
             {/* Filter Row */}
             <div className='flex gap-2 w-full sm:w-auto'>
-              <Select value={roleFilter} onValueChange={handleRoleFilter}>
+              <Select value={roleFilter} onValueChange={setRoleFilter}>
                 <SelectTrigger className='flex-1 text-orange-600 bg-white sm:flex-initial sm:w-[160px] h-11'>
                   <SelectValue placeholder='Filter by role' />
                 </SelectTrigger>

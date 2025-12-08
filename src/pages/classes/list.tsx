@@ -14,7 +14,6 @@ import { CreateButton } from '@/components/refine-ui/buttons/create';
 import { useTable } from '@refinedev/react-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/refine-ui/data-table/data-table';
-import { DataTableSorter } from '@/components/refine-ui/data-table/data-table-sorter';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { useNavigation, useList } from '@refinedev/core';
@@ -59,11 +58,8 @@ export const ClassesList = () => {
         id: 'banner',
         accessorKey: 'bannerUrl',
         size: 80,
-        header: ({ column }) => (
-          <div className='flex ml-2 font-bold items-center gap-1'>
-            <span>Class Name</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex ml-2 font-bold items-center gap-1'>Banner</div>
         ),
         cell: ({ getValue }) => {
           const bannerUrl = getValue<string>();
@@ -77,16 +73,14 @@ export const ClassesList = () => {
             </div>
           );
         },
-        filterFn: 'includesString',
       },
       {
         id: 'name',
         accessorKey: 'name',
         size: 300,
-        header: ({ column }) => (
+        header: () => (
           <div className='flex ml-2 font-bold items-center gap-1'>
-            <span>Class Name</span>
-            <DataTableSorter column={column} />
+            Class Name
           </div>
         ),
         cell: ({ getValue }) => {
@@ -95,17 +89,13 @@ export const ClassesList = () => {
             <div className='ml-2 py-3 text-foreground font-bold'>{name}</div>
           );
         },
-        filterFn: 'includesString',
       },
       {
         id: 'status',
         accessorKey: 'status',
         size: 100,
-        header: ({ column }) => (
-          <div className='flex font-bold items-center gap-1'>
-            <span>Status</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold items-center gap-1'>Status</div>
         ),
         cell: ({ getValue }) => {
           const status = getValue<string>();
@@ -126,38 +116,32 @@ export const ClassesList = () => {
       },
       {
         id: 'subject',
-        accessorKey: 'subject.name',
+        accessorKey: 'subject',
         size: 200,
-        header: ({ column }) => (
-          <div className='flex font-bold items-center gap-1'>
-            <span>Subject</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold items-center gap-1'>Subject</div>
         ),
         cell: ({ row }) => {
           const subject = row.original.subject;
           return (
             <span className='py-10 text-teal-600 font-bold'>
-              {subject?.name || 'N/A'}
+              {subject?.name}
             </span>
           );
         },
       },
       {
         id: 'teacher',
-        accessorKey: 'teacher.name',
+        accessorKey: 'teacher',
         size: 100,
-        header: ({ column }) => (
-          <div className='flex font-bold items-center gap-1'>
-            <span>Teacher</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold items-center gap-1'>Teacher</div>
         ),
         cell: ({ row }) => {
           const teacher = row.original.teacher;
           return (
             <span className='text-foreground font-semibold'>
-              {teacher?.name || 'N/A'}
+              {teacher?.name}
             </span>
           );
         },
@@ -166,18 +150,13 @@ export const ClassesList = () => {
         id: 'capacity',
         accessorKey: 'capacity',
         size: 80,
-        header: ({ column }) => (
-          <div className='flex font-bold items-center gap-1'>
-            <span>Capacity</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold items-center gap-1'>Capacity</div>
         ),
         cell: ({ getValue }) => {
           const capacity = getValue<number>();
           return (
-            <span className='text-foreground font-medium'>
-              {capacity || '-'}
-            </span>
+            <span className='text-foreground font-medium'>{capacity}</span>
           );
         },
       },
@@ -227,21 +206,10 @@ export const ClassesList = () => {
     },
   });
 
-  const handleSearch = (value: string) => {
-    setGlobalFilter(value);
-  };
-
-  const handleSubjectFilter = (value: string) => {
-    setSubjectFilter(value);
-  };
-
-  const handleTeacherFilter = (value: string) => {
-    setTeacherFilter(value);
-  };
-
   return (
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
+
       <div className='space-y-4 mb-6'>
         <h1 className='text-4xl font-bold text-foreground tracking-tight'>
           Classes
@@ -258,13 +226,13 @@ export const ClassesList = () => {
                 placeholder='Search by name...'
                 className='pl-10 bg-white w-full'
                 value={globalFilter}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => setGlobalFilter(e.target.value)}
               />
             </div>
 
             {/* Filter and Create Button Row */}
             <div className='flex gap-2 w-full sm:w-auto'>
-              <Select value={subjectFilter} onValueChange={handleSubjectFilter}>
+              <Select value={subjectFilter} onValueChange={setSubjectFilter}>
                 <SelectTrigger className='flex-1 bg-white text-orange-600 sm:flex-initial sm:w-[180px] h-11'>
                   <SelectValue placeholder='Filter by subject' />
                 </SelectTrigger>
@@ -278,7 +246,7 @@ export const ClassesList = () => {
                 </SelectContent>
               </Select>
 
-              <Select value={teacherFilter} onValueChange={handleTeacherFilter}>
+              <Select value={teacherFilter} onValueChange={setTeacherFilter}>
                 <SelectTrigger className='flex-1 bg-white text-orange-600 sm:flex-initial sm:w-[180px] h-11'>
                   <SelectValue placeholder='Filter by teacher' />
                 </SelectTrigger>

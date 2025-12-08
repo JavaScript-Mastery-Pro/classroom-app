@@ -66,8 +66,6 @@ export const ClassesCreate = () => {
     control,
   } = form;
 
-  console.log('Banner:', banner);
-
   // Submit handler with banner upload
   const onSubmit = async (values: {
     name: string;
@@ -82,8 +80,6 @@ export const ClassesCreate = () => {
     inviteCode?: string;
   }) => {
     try {
-      console.log('Submitting with banner:', banner);
-
       // Upload banner if provided
       if (banner?.length > 0) {
         const formData = new FormData();
@@ -100,7 +96,6 @@ export const ClassesCreate = () => {
         }
 
         const data = await response.json();
-        console.log('Cloudinary response:', data);
 
         values.bannerUrl = data.url;
         values.bannerCldPubId = data.public_id;
@@ -108,15 +103,11 @@ export const ClassesCreate = () => {
 
       // Add schedules and invite code to values
       values.schedules = schedules;
-
-      console.log('Final values being submitted:', values);
       await onFinish(values);
     } catch (error) {
       console.error('Error creating class:', error);
     }
   };
-
-  console.log('Form values:', form.getValues());
 
   // Fetch subjects list
   const { query: subjectsQuery } = useList<Subject>({

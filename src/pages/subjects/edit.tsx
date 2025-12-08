@@ -108,7 +108,9 @@ export const SubjectsEdit = () => {
         <div className='flex items-center justify-center h-[60vh]'>
           <div className='flex flex-col items-center gap-4'>
             <Loader2 className='h-12 w-12 animate-spin text-orange-600' />
-            <p className='text-lg font-semibold text-gray-600'>Loading subject data...</p>
+            <p className='text-lg font-semibold text-gray-600'>
+              Loading subject data...
+            </p>
           </div>
         </div>
       </EditView>
@@ -253,32 +255,21 @@ export const SubjectsEdit = () => {
                     </Button>
                   </ConfirmationModal>
 
-                  <div className='flex gap-2 flex-col-reverse sm:flex-row'>
-                    <Button
-                      type='button'
-                      size='lg'
-                      disabled={isSubmitting || isPending}
-                      onClick={() => reset()}
-                      className='max-sm:w-full h-12 font-semibold transition-all duration-300 cursor-pointer text-white bg-gray-800'
-                    >
-                      Reset
-                    </Button>
-                    <Button
-                      type='submit'
-                      size='lg'
-                      className='max-sm:w-full h-12 font-semibold text-white shadow-lg transition-all duration-300 cursor-pointer bg-gradient-orange-diagonal'
-                      disabled={isSubmitting || isPending}
-                    >
-                      {isSubmitting ? (
-                        <div className='flex gap-1'>
-                          <span>Saving... </span>{' '}
-                          <Loader2 className='inline-block ml-2 animate-spin' />
-                        </div>
-                      ) : (
-                        'Save Changes'
-                      )}
-                    </Button>
-                  </div>
+                  <Button
+                    type='submit'
+                    size='lg'
+                    className='max-sm:w-full h-12 font-semibold text-white shadow-lg transition-all duration-300 cursor-pointer bg-gradient-orange-diagonal'
+                    disabled={isSubmitting || isPending}
+                  >
+                    {isSubmitting ? (
+                      <div className='flex gap-1'>
+                        <span>Saving... </span>{' '}
+                        <Loader2 className='inline-block ml-2 animate-spin' />
+                      </div>
+                    ) : (
+                      'Save Changes'
+                    )}
+                  </Button>
                 </section>
               </form>
             </Form>
