@@ -5,7 +5,7 @@ import { AdvancedImage } from '@cloudinary/react';
 import { ShowView } from '@/components/refine-ui/views/show-view';
 import { useResourceParams, useOne } from '@refinedev/core';
 import { Calendar, Clock } from 'lucide-react';
-import { Class, Subject, User } from '@/types';
+import { Class } from '@/types';
 import { bannerPhoto } from '@/lib/cloudinary';
 import { formatTime12Hour } from '@/lib/utils';
 
@@ -21,31 +21,6 @@ export const ClassesShow = () => {
   });
 
   const classData = classQueryData?.data;
-
-  // Fetch subject data
-  const {
-    query: { data: subjectData },
-  } = useOne<Subject>({
-    resource: 'subjects',
-    id: classData?.subjectId,
-    queryOptions: {
-      enabled: !!classData?.subjectId,
-    },
-  });
-
-  // Fetch teacher data
-  const {
-    query: { data: teacherData },
-  } = useOne<User>({
-    resource: 'users',
-    id: classData?.teacherId,
-    queryOptions: {
-      enabled: !!classData?.teacherId,
-    },
-  });
-
-  const subject = subjectData?.data;
-  const teacher = teacherData?.data;
 
   if (isClassLoading) {
     return (
@@ -67,17 +42,17 @@ export const ClassesShow = () => {
     );
   }
 
+  console.log('classData frontend', classData);
+
   return (
     <ShowView className='container max-w-7xl mx-auto pb-8 px-2 sm:px-4'>
       {/* Banner */}
       {classData.bannerCldPubId && (
-        <div className='mt-5 mb-1'>
-          <AdvancedImage
-            cldImg={bannerPhoto(classData.bannerCldPubId, classData.name)}
-            alt='Class Banner'
-            className='w-full aspect-[5/1] rounded-xl object-cover border-2 border-gray-100/10 shadow-md'
-          />
-        </div>
+        <AdvancedImage
+          cldImg={bannerPhoto(classData.bannerCldPubId, classData.name)}
+          alt='Class Banner'
+          className='w-full mt-5 mb-1 aspect-[5/1] rounded-xl object-cover border-2 border-gray-100/10 shadow-md'
+        />
       )}
 
       <Card className='p-6 sm:p-8 space-y-3 shadow-md'>
@@ -102,70 +77,55 @@ export const ClassesShow = () => {
             </Badge>
           </div>
 
-          <div className='flex flex-wrap gap-4 text-sm'>
-            <div className='flex items-center gap-2 px-3 py-2 bg-orange-50 rounded-lg border border-orange-200'>
-              <span className='font-medium text-gray-700'>Class ID:</span>
-              <span className='font-mono font-bold text-gray-900'>
-                {classData.id}
-              </span>
+          <div className='grid sm:grid-cols-2 mt-8 gap-4 text-sm'>
+            <div className='space-y-2'>
+              <p className='text-xs mb-3 font-bold text-gray-400 uppercase tracking-wider'>
+                👨‍🏫 Instructor
+              </p>
+              <p className='text-sm flex gap-2 items-center font-bold text-gray-900'>
+                <span className='font-mono font-bold text-orange-700'>
+                  Teacher: {classData.teacher?.name}
+                </span>
+              </p>
+              <p className='text-sm font-medium '>
+                Email: {classData?.teacher?.email}
+              </p>
             </div>
-            <div className='flex items-center gap-2 px-3 py-2 bg-orange-50 rounded-lg border border-orange-200'>
-              <span className='font-medium text-gray-700'>Capacity:</span>
-              <span className='font-bold text-gray-900'>
-                {classData.capacity} students
-              </span>
+            <div className='space-y-2'>
+              <p className='text-xs mb-3 font-bold text-gray-400 uppercase tracking-wider'>
+                🏛️ Department
+              </p>
+              <p className='text-sm flex gap-2 items-center font-bold text-orange-700'>
+                {classData?.teacher?.department}
+              </p>
+              <p className='text-sm font-medium '>
+                Capacity: {classData.capacity} students
+              </p>
             </div>
           </div>
         </div>
 
         <Separator />
 
-        {/* Subject and Teacher Detailed Cards */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-20'>
-          {/* Subject Card */}
-          <div>
-            <div className='flex items-start justify-between mb-3'>
-              <p className='text-xs font-bold text-gray-400 uppercase tracking-wider'>
-                📚 Subject
-              </p>
-            </div>
-
-            <div className='space-y-2'>
-              <p className='text-xl font-bold text-gray-900'>
-                {subject ? subject.name : `Subject ID: ${classData.subjectId}`}
-              </p>
-              <p className='text-sm font-semibold text-orange-700'>
-                {subject ? `Code: ${subject.code}` : 'Code: [Loading...]'}
-              </p>
-              {subject?.description && (
-                <p className='text-sm text-gray-600 mt-2 line-clamp-2 leading-relaxed'>
-                  {subject.description}
-                </p>
-              )}
-            </div>
+        {/* Subject Card */}
+        <div>
+          <div className='flex items-start justify-between mb-3'>
+            <p className='text-xs font-bold text-gray-400 uppercase tracking-wider'>
+              📚 Course
+            </p>
           </div>
 
-          {/* Teacher Card */}
-          <div>
-            <div className='flex items-start justify-between mb-3'>
-              <p className='text-xs font-bold text-gray-400 uppercase tracking-wider'>
-                👨‍🏫 Instructor
-              </p>
-            </div>
-            <div className='space-y-2'>
-              <p className='text-xl font-bold text-gray-900'>
-                {teacher ? teacher.name : `Teacher ID: ${classData.teacherId}`}
-              </p>
-              <p className='text-sm font-semibold text-orange-700'>
-                {teacher ? teacher.email : 'Email: [Loading...]'}
-              </p>
-              {teacher?.department && (
-                <p className='text-sm text-gray-600 mt-2'>
-                  <span className='font-medium'>Department:</span>{' '}
-                  {teacher.department}
-                </p>
-              )}
-            </div>
+          <div className='space-y-2'>
+            <p className='text-sm font-semibold text-orange-700'>
+              Code: {classData?.subject?.code}
+            </p>
+            <p className='text-2xl font-bold text-gray-900'>
+              {classData?.subject?.name}
+            </p>
+
+            <p className='text-sm text-gray-600 mt-2 leading-relaxed'>
+              {classData?.subject?.description}
+            </p>
           </div>
         </div>
 
