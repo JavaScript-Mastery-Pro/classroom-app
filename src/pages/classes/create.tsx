@@ -98,8 +98,11 @@ export const ClassesCreate = () => {
     inviteCode?: string;
   }) => {
     try {
+      console.log('Submitting with banner:', banner);
+
       // Upload banner if provided
       if (banner?.length > 0) {
+        console.log('Uploading banner to Cloudinary...');
         const formData = new FormData();
         formData.append('file', banner[0]);
         formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -109,18 +112,30 @@ export const ClassesCreate = () => {
           body: formData,
         });
 
+        if (!response.ok) {
+          throw new Error(`Cloudinary upload failed: ${response.statusText}`);
+        }
+
         const data = await response.json();
+        console.log('Cloudinary response:', data);
+
         values.bannerUrl = data.secure_url;
         values.bannerCldPubId = data.public_id;
+      } else {
+        // Ensure empty values if no banner
+        values.bannerUrl = '';
+        values.bannerCldPubId = '';
       }
 
       // Add schedules and invite code to values
       values.schedules = schedules;
       values.inviteCode = inviteCode;
 
+      console.log('Final values being submitted:', values);
       await onFinish(values);
     } catch (error) {
       console.error('Error creating class:', error);
+      throw error;
     }
   };
 
@@ -343,52 +358,6 @@ export const ClassesCreate = () => {
                   />
                 </div>
 
-                {/* Invite Code Section */}
-                <div className='space-y-3 p-4 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-lg border-2 border-orange-200'>
-                  <Label className='text-gray-900 font-semibold text-sm'>
-                    Invite Code
-                  </Label>
-                  <p className='text-xs text-gray-600'>
-                    Students will use this code to join the class. You can regenerate it if needed.
-                  </p>
-                  <div className='flex gap-2 items-center'>
-                    <div className='flex-1 p-3 bg-white rounded-lg border-2 border-orange-300'>
-                      <p className='text-2xl font-black text-orange-600 tracking-widest font-mono text-center'>
-                        {formatInviteCode(inviteCode)}
-                      </p>
-                    </div>
-                    <Button
-                      type='button'
-                      variant='outline'
-                      size='lg'
-                      onClick={handleCopyCode}
-                      className='border-2 border-orange-300 hover:bg-orange-50'
-                    >
-                      {copied ? (
-                        <>
-                          <Check className='h-4 w-4 mr-2' />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className='h-4 w-4 mr-2' />
-                          Copy
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      type='button'
-                      variant='outline'
-                      size='lg'
-                      onClick={handleRegenerateCode}
-                      className='border-2 border-gray-300 hover:bg-gray-50'
-                    >
-                      <RefreshCw className='h-4 w-4 mr-2' />
-                      Regenerate
-                    </Button>
-                  </div>
-                </div>
-
                 <FormField
                   control={control}
                   name='description'
@@ -410,7 +379,57 @@ export const ClassesCreate = () => {
                 />
 
                 <div className='space-y-2'>
-                  <ScheduleInput schedules={schedules} onChange={setSchedules} />
+                  <ScheduleInput
+                    schedules={schedules}
+                    onChange={setSchedules}
+                  />
+                </div>
+
+                {/* Invite Code Section */}
+                <div className='space-y-3 p-4 bg-gray-50 rounded-lg border border-gray-200'>
+                  <Label className='text-gray-900 font-semibold text-sm'>
+                    Invite Code
+                  </Label>
+                  <p className='text-xs text-gray-600'>
+                    Students will use this code to join the class. You can
+                    regenerate it if needed.
+                  </p>
+                  <div className='flex gap-2 items-center'>
+                    <div className='flex-1 p-2 bg-white rounded-lg border border-orange-200'>
+                      <p className='text-2xl font-black text-orange-600 tracking-widest font-mono text-center'>
+                        {formatInviteCode(inviteCode)}
+                      </p>
+                    </div>
+                    <Button
+                      type='button'
+                      variant='outline'
+                      size='lg'
+                      onClick={handleCopyCode}
+                      className='border h-11 border-orange-600 hover:bg-orange-50'
+                    >
+                      {copied ? (
+                        <>
+                          <Check className='h-4 w-4 mr-2' />
+                          Copied
+                        </>
+                      ) : (
+                        <>
+                          <Copy className='h-4 w-4 mr-2' />
+                          Copy
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      type='button'
+                      variant='outline'
+                      size='lg'
+                      onClick={handleRegenerateCode}
+                      className='border h-11 border-teal-600 hover:bg-gray-50'
+                    >
+                      <RefreshCw className='h-4 w-4 mr-2' />
+                      Regenerate
+                    </Button>
+                  </div>
                 </div>
 
                 <Button

@@ -99,8 +99,11 @@ export const ClassesEdit = () => {
     schedules?: ClassSchedule[];
   }) => {
     try {
+      console.log('Editing class with banner:', banner);
+
       // Upload banner if a new one is provided
       if (banner?.length > 0) {
+        console.log('Uploading new banner to Cloudinary...');
         const formData = new FormData();
         formData.append('file', banner[0]);
         formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -110,19 +113,31 @@ export const ClassesEdit = () => {
           body: formData,
         });
 
+        if (!response.ok) {
+          throw new Error(`Cloudinary upload failed: ${response.statusText}`);
+        }
+
         const data = await response.json();
+        console.log('Cloudinary response:', data);
+
         values.bannerUrl = data.secure_url;
         values.bannerCldPubId = data.public_id;
+      } else if (!updateBanner) {
+        // Keep existing banner if not updating
+        values.bannerUrl = classData?.bannerUrl || '';
+        values.bannerCldPubId = classData?.bannerCldPubId || '';
       }
 
       // Add schedules to values
       values.schedules = schedules;
 
+      console.log('Final values being submitted:', values);
       await onFinish(values);
       setUpdateBanner(false);
       setBanner([]);
     } catch (error) {
       console.error('Error updating class:', error);
+      throw error;
     }
   };
 
