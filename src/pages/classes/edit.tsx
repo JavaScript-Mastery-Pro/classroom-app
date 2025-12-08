@@ -86,6 +86,15 @@ export const ClassesEdit = () => {
     getValues,
   } = form;
 
+  console.log('Form State:', {
+    isSubmitting,
+    values: getValues(),
+  });
+
+  console.log('query:', query?.data);
+  console.log('Errors:', form.formState.errors);
+  console.log('updateBanner:', updateBanner);
+
   // Submit handler with banner upload
   const onSubmit = async (values: {
     name: string;
@@ -99,10 +108,17 @@ export const ClassesEdit = () => {
     schedules?: ClassSchedule[];
   }) => {
     try {
-      console.log('Editing class with banner:', banner);
+      console.log(
+        'Editing class - updateBanner:',
+        updateBanner,
+        'banner files:',
+        banner
+      );
 
-      // Upload banner if a new one is provided
-      if (banner?.length > 0) {
+      console.log('updateBanner:', updateBanner);
+
+      // Upload banner if a new one is provided and updateBanner is true
+      if (updateBanner && banner?.length > 0) {
         console.log('Uploading new banner to Cloudinary...');
         const formData = new FormData();
         formData.append('file', banner[0]);
@@ -120,12 +136,10 @@ export const ClassesEdit = () => {
         const data = await response.json();
         console.log('Cloudinary response:', data);
 
-        values.bannerUrl = data.secure_url;
+        console.log('Banner uploaded successfully:', data);
+
+        values.bannerUrl = data.url;
         values.bannerCldPubId = data.public_id;
-      } else if (!updateBanner) {
-        // Keep existing banner if not updating
-        values.bannerUrl = classData?.bannerUrl || '';
-        values.bannerCldPubId = classData?.bannerCldPubId || '';
       }
 
       // Add schedules to values
@@ -137,7 +151,7 @@ export const ClassesEdit = () => {
       setBanner([]);
     } catch (error) {
       console.error('Error updating class:', error);
-      throw error;
+      // Don't throw to allow error to be handled by form
     }
   };
 
@@ -166,8 +180,6 @@ export const ClassesEdit = () => {
 
   const classData = query?.data?.data as Class | undefined;
 
-  console.log('Class Data:', classData);
-
   if (classData && !getValues('subjectId')) {
     reset({
       name: classData?.name ?? '',
@@ -181,6 +193,7 @@ export const ClassesEdit = () => {
       schedules: classData?.schedules ?? [],
     });
   }
+
   useEffect(() => {
     // Set schedules and invite code whenever classData is available
     if (classData && schedules?.length === 0) {
@@ -257,7 +270,9 @@ export const ClassesEdit = () => {
         <div className='flex items-center justify-center h-[60vh]'>
           <div className='flex flex-col items-center gap-4'>
             <Loader2 className='h-12 w-12 animate-spin text-orange-600' />
-            <p className='text-lg font-semibold text-gray-600'>Loading class data...</p>
+            <p className='text-lg font-semibold text-gray-600'>
+              Loading class data...
+            </p>
           </div>
         </div>
       </EditView>

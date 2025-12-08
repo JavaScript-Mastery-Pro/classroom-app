@@ -1,6 +1,6 @@
 import { useForm } from '@refinedev/react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,40 +29,22 @@ import { ScheduleInput } from '@/components/refine-ui/form/schedule-input';
 
 import { Textarea } from '@/components/ui/textarea';
 import { useBack, useList } from '@refinedev/core';
-import { Loader2, Copy, RefreshCw, Check } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { classSchema } from '@/lib/schema';
 import { ClassSchedule, Subject, User } from '@/types';
 import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_UPLOAD_URL } from '@/constants';
-import { generateInviteCode, formatInviteCode } from '@/lib/utils/classCode';
 
 export const ClassesCreate = () => {
   const back = useBack();
   const [banner, setBanner] = useState<File[]>([]);
   const [schedules, setSchedules] = useState<ClassSchedule[]>([]);
-  const [inviteCode, setInviteCode] = useState('');
-  const [copied, setCopied] = useState(false);
-
-  // Generate invite code on component mount
-  useEffect(() => {
-    setInviteCode(generateInviteCode());
-  }, []);
-
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(inviteCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleRegenerateCode = () => {
-    setInviteCode(generateInviteCode());
-    setCopied(false);
-  };
 
   const form = useForm({
     resolver: zodResolver(classSchema),
     refineCoreProps: {
       resource: 'classes',
       action: 'create',
+      redirect: false,
     },
     defaultValues: {
       name: '',
@@ -84,6 +66,8 @@ export const ClassesCreate = () => {
     control,
   } = form;
 
+  console.log('Banner:', banner);
+
   // Submit handler with banner upload
   const onSubmit = async (values: {
     name: string;
@@ -102,7 +86,6 @@ export const ClassesCreate = () => {
 
       // Upload banner if provided
       if (banner?.length > 0) {
-        console.log('Uploading banner to Cloudinary...');
         const formData = new FormData();
         formData.append('file', banner[0]);
         formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -119,25 +102,21 @@ export const ClassesCreate = () => {
         const data = await response.json();
         console.log('Cloudinary response:', data);
 
-        values.bannerUrl = data.secure_url;
+        values.bannerUrl = data.url;
         values.bannerCldPubId = data.public_id;
-      } else {
-        // Ensure empty values if no banner
-        values.bannerUrl = '';
-        values.bannerCldPubId = '';
       }
 
       // Add schedules and invite code to values
       values.schedules = schedules;
-      values.inviteCode = inviteCode;
 
       console.log('Final values being submitted:', values);
       await onFinish(values);
     } catch (error) {
       console.error('Error creating class:', error);
-      throw error;
     }
   };
+
+  console.log('Form values:', form.getValues());
 
   // Fetch subjects list
   const { query: subjectsQuery } = useList<Subject>({
@@ -383,53 +362,6 @@ export const ClassesCreate = () => {
                     schedules={schedules}
                     onChange={setSchedules}
                   />
-                </div>
-
-                {/* Invite Code Section */}
-                <div className='space-y-3 p-4 bg-gray-50 rounded-lg border border-gray-200'>
-                  <Label className='text-gray-900 font-semibold text-sm'>
-                    Invite Code
-                  </Label>
-                  <p className='text-xs text-gray-600'>
-                    Students will use this code to join the class. You can
-                    regenerate it if needed.
-                  </p>
-                  <div className='flex gap-2 items-center'>
-                    <div className='flex-1 p-2 bg-white rounded-lg border border-orange-200'>
-                      <p className='text-2xl font-black text-orange-600 tracking-widest font-mono text-center'>
-                        {formatInviteCode(inviteCode)}
-                      </p>
-                    </div>
-                    <Button
-                      type='button'
-                      variant='outline'
-                      size='lg'
-                      onClick={handleCopyCode}
-                      className='border h-11 border-orange-600 hover:bg-orange-50'
-                    >
-                      {copied ? (
-                        <>
-                          <Check className='h-4 w-4 mr-2' />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className='h-4 w-4 mr-2' />
-                          Copy
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      type='button'
-                      variant='outline'
-                      size='lg'
-                      onClick={handleRegenerateCode}
-                      className='border h-11 border-teal-600 hover:bg-gray-50'
-                    >
-                      <RefreshCw className='h-4 w-4 mr-2' />
-                      Regenerate
-                    </Button>
-                  </div>
                 </div>
 
                 <Button

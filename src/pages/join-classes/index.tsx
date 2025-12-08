@@ -4,14 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  InfoIcon,
-  Megaphone,
-  Clock,
-  Calendar,
-  Users,
-  BookOpen,
-} from 'lucide-react';
+import { InfoIcon, Megaphone, Clock, Users, BookOpen } from 'lucide-react';
 import { useList, useNavigation } from '@refinedev/core';
 import { Class } from '@/types';
 import { AdvancedImage } from '@cloudinary/react';
@@ -84,8 +77,8 @@ export const JoinClassesList = () => {
           <Badge
             className={
               classItem.status === 'active'
-                ? 'bg-green-600 text-white hover:bg-green-700 px-3 py-1.5 font-bold shadow-lg border-2 border-white'
-                : 'bg-gray-600 text-white px-3 py-1.5 font-bold shadow-lg border-2 border-white'
+                ? 'bg-green-600 text-white hover:bg-green-700 px-3 py-1.5 font-bold shadow-lg border border-white'
+                : 'bg-gray-600 text-white px-3 py-1.5 font-bold shadow-lg border border-white'
             }
           >
             {classItem.status.toUpperCase()}
@@ -116,7 +109,7 @@ export const JoinClassesList = () => {
         {/* Description */}
         {classItem.description && (
           <div className='pb-4 border-b border-gray-100'>
-            <p className='text-sm text-gray-700 leading-relaxed line-clamp-2'>
+            <p className='text-sm text-gray-700 leading-relaxed line-clamp-1'>
               {classItem.description}
             </p>
           </div>
@@ -161,18 +154,13 @@ export const JoinClassesList = () => {
           {/* Schedule Preview */}
           {classItem.schedules && classItem.schedules.length > 0 && (
             <div className='pt-2'>
-              <div className='flex items-center gap-2 mb-3'>
-                <div className='flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg'>
-                  <Calendar className='h-5 w-5 text-gray-600' />
-                </div>
-                <p className='text-xs font-medium text-gray-500'>
-                  Class Schedule
-                </p>
-              </div>
               <div className='space-y-2'>
                 {classItem.schedules.slice(0, 2).map((schedule, idx) => (
                   <div key={idx} className='flex items-center gap-2.5 text-sm'>
-                    <Clock className='h-4 w-4 text-gray-400 flex-shrink-0' />
+                    <div className='flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg'>
+                      <Clock className='h-5 w-5 text-gray-600 flex-shrink-0' />
+                    </div>
+
                     <span className='font-bold text-gray-900'>
                       {schedule.day}
                     </span>
@@ -195,7 +183,7 @@ export const JoinClassesList = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className='flex gap-3 pt-5'>
+        <div className='flex gap-3'>
           <Button
             size='lg'
             // onClick={() => setJoinModalOpen(true)}

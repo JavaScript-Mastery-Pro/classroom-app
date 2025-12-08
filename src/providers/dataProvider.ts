@@ -76,6 +76,9 @@ export const dataProvider: DataProvider = {
 
   create: async ({ resource, variables }) => {
     const response = await apiClient.post(`/${resource}`, variables);
+
+    console.log("Resource variables:", variables);
+    console.log(`Creating new ${resource}:`, response.data);
     return { success: true, data: response.data[0], redirectTo: `/${resource}` };
   },
 
