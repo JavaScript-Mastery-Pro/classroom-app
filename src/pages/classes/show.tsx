@@ -82,7 +82,7 @@ export const ClassesShow = () => {
               <p className='text-xs mb-3 font-bold text-gray-400 uppercase tracking-wider'>
                 👨‍🏫 Instructor
               </p>
-              <p className='text-sm flex gap-2 items-center font-bold text-gray-900'>
+              <p className='text-base flex gap-2 items-center font-bold text-gray-900'>
                 <span className='font-mono font-bold text-orange-700'>
                   Teacher: {classData.teacher?.name}
                 </span>
@@ -95,7 +95,7 @@ export const ClassesShow = () => {
               <p className='text-xs mb-3 font-bold text-gray-400 uppercase tracking-wider'>
                 🏛️ Department
               </p>
-              <p className='text-sm flex gap-2 items-center font-bold text-orange-700'>
+              <p className='text-base flex gap-2 items-center font-bold text-orange-700'>
                 {classData?.teacher?.department}
               </p>
               <p className='text-sm font-medium '>
@@ -149,7 +149,7 @@ export const ClassesShow = () => {
                       <Clock className='h-6 w-6 text-white' />
                     </div>
                     <div className='flex-1 min-w-0'>
-                      <p className='font-bold text-gray-900 text-lg'>
+                      <p className='font-bold text-gray-900 text-base'>
                         {slot.day}
                       </p>
                       <p className='text-sm font-semibold text-teal-700'>

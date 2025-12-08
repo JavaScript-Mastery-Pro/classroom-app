@@ -48,6 +48,14 @@ function App() {
                 },
               },
               {
+                name: 'join-classes',
+                list: '/join-classes',
+                meta: {
+                  label: 'Join Classes',
+                  icon: '🎓',
+                },
+              },
+              {
                 name: 'users',
                 list: '/users',
                 edit: '/users/edit/:id',
@@ -77,14 +85,6 @@ function App() {
                 meta: {
                   label: 'Classes',
                   icon: '🏫',
-                },
-              },
-              {
-                name: 'join-classes',
-                list: '/join-classes',
-                meta: {
-                  label: 'Join Classes',
-                  icon: '🎓',
                 },
               },
             ]}
