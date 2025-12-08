@@ -233,6 +233,21 @@ export const ClassesEdit = () => {
   const subjects = subjectsQuery.data?.data || [];
   const subjectsLoading = subjectsQuery.isLoading;
   const teachersLoading = teachersQuery.isLoading;
+  const isDataLoading = query?.isLoading || !classData;
+
+  // Show loader while data is loading
+  if (isDataLoading) {
+    return (
+      <EditView className='container mx-auto pb-8 px-2 sm:px-4'>
+        <div className='flex items-center justify-center h-[60vh]'>
+          <div className='flex flex-col items-center gap-4'>
+            <Loader2 className='h-12 w-12 animate-spin text-orange-600' />
+            <p className='text-lg font-semibold text-gray-600'>Loading class data...</p>
+          </div>
+        </div>
+      </EditView>
+    );
+  }
 
   return (
     <EditView className='container mx-auto pb-8 px-2 sm:px-4'>
