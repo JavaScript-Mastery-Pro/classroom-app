@@ -121,7 +121,7 @@ export const JoinClassModal = ({ open, onOpenChange }: JoinClassModalProps) => {
             </div>
             Join a Class
           </DialogTitle>
-          <DialogDescription className='text-base pt-2'>
+          <DialogDescription className='text-sm pt-2'>
             Enter the 6-character invite code provided by your teacher to join
             the class.
           </DialogDescription>
@@ -137,7 +137,7 @@ export const JoinClassModal = ({ open, onOpenChange }: JoinClassModalProps) => {
               placeholder='ABC123'
               value={inviteCode}
               onChange={handleCodeChange}
-              className={`text-center text-2xl font-bold tracking-widest uppercase h-14 ${
+              className={`text-center text-2xl text-orange-600 font-bold tracking-widest uppercase h-14 ${
                 error ? 'border-red-500 focus-visible:ring-red-500' : ''
               }`}
               maxLength={7} // ABC-123 with dash

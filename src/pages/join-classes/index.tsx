@@ -9,11 +9,12 @@ import { Class } from '@/types';
 
 import { formatTime12Hour } from '@/lib/utils';
 import { mockAnnouncements } from '@/constants';
-
-// import { JoinClassModal } from '@/components/refine-ui/modals/join-class-modal';
+import { JoinClassModal } from '@/components/refine-ui/modals/join-class-modal';
+import { useState } from 'react';
 
 export const JoinClassesList = () => {
   const { show } = useNavigation();
+  const [open, setOpen] = useState(false);
 
   // Fetch all classes
   const { query: classesQuery } = useList<Class>({
@@ -147,8 +148,11 @@ export const JoinClassesList = () => {
         <div className='flex items-end gap-3'>
           <Button
             size='lg'
-            // onClick={() => setJoinModalOpen(true)}
-            className='w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold shadow-md hover:shadow-lg transition-all disabled:from-gray-300 disabled:to-gray-400 disabled:text-gray-500'
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(true);
+            }}
+            className='w-full cursor-pointer bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold shadow-md hover:shadow-lg transition-all disabled:from-gray-300 disabled:to-gray-400 disabled:text-gray-500'
           >
             Join Class
           </Button>
@@ -246,6 +250,7 @@ export const JoinClassesList = () => {
           ))}
         </div>
       )}
+      <JoinClassModal open={open} onOpenChange={setOpen} />
     </ListView>
   );
 };

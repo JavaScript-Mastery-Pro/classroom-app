@@ -33,6 +33,7 @@ import { Loader2 } from 'lucide-react';
 import { classSchema } from '@/lib/schema';
 import { ClassSchedule, Subject, User } from '@/types';
 import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_UPLOAD_URL } from '@/constants';
+import { generateInviteCode } from '@/lib/utils/classCode';
 
 export const ClassesCreate = () => {
   const back = useBack();
@@ -100,7 +101,10 @@ export const ClassesCreate = () => {
         values.bannerCldPubId = data.public_id;
       }
 
-      // Add schedules and invite code to values
+      const newCode = generateInviteCode();
+
+      // Add invite code and schedules to values
+      values.inviteCode = newCode;
       values.schedules = schedules;
       await onFinish(values);
     } catch (error) {

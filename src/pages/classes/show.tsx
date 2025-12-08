@@ -8,9 +8,13 @@ import { Calendar, Clock } from 'lucide-react';
 import { Class } from '@/types';
 import { bannerPhoto } from '@/lib/cloudinary';
 import { formatTime12Hour } from '@/lib/utils';
+import { JoinClassModal } from '@/components/refine-ui/modals/join-class-modal';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export const ClassesShow = () => {
   const { id } = useResourceParams();
+  const [open, setOpen] = useState(false);
 
   // Fetch class data
   const {
@@ -42,8 +46,6 @@ export const ClassesShow = () => {
     );
   }
 
-  console.log('classData frontend', classData);
-
   return (
     <ShowView className='container max-w-6xl mx-auto pb-8 px-2 sm:px-4'>
       {/* Banner */}
@@ -58,18 +60,20 @@ export const ClassesShow = () => {
       <Card className='p-6 sm:p-8 space-y-3 shadow-md'>
         {/* Class Details */}
         <div>
-          <div className='flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4'>
+          <div className='flex flex-col sm:flex-row sm:items-start justify-between gap-5 mb-4'>
             <div className='flex-1 space-y-2'>
               <h1 className='text-xl sm:text-2xl font-bold text-gray-900'>
                 {classData.name}
               </h1>
+
               <p className='text-sm text-gray-600'>{classData.description}</p>
             </div>
+
             <Badge
               variant={classData.status === 'active' ? 'default' : 'secondary'}
               className={
                 classData.status === 'active'
-                  ? 'bg-green-600 text-white hover:bg-green-700 px-3 py-1'
+                  ? 'bg-green-600 text-white px-3 py-1'
                   : 'bg-gray-600 text-white px-3 py-1'
               }
             >
@@ -168,8 +172,7 @@ export const ClassesShow = () => {
 
         {/* Join This Class Section */}
         <div>
-          <h2 className='text-lg font-bold text-gray-900 mb-4 flex items-center gap-2'>
-            <div className='w-1 h-5 bg-orange-500 rounded'></div>
+          <h2 className='text-lg font-bold text-gray-900 flex items-center gap-2'>
             🎓 Join This Class
           </h2>
           <div>
@@ -184,8 +187,17 @@ export const ClassesShow = () => {
               </ol>
             </div>
           </div>
+          <Button
+            size='lg'
+            onClick={() => setOpen(true)}
+            className='w-full mt-4 cursor-pointer bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold shadow-md hover:shadow-lg transition-all disabled:from-gray-300 disabled:to-gray-400 disabled:text-gray-500'
+          >
+            Join Class
+          </Button>
         </div>
       </Card>
+
+      <JoinClassModal open={open} onOpenChange={setOpen} />
     </ShowView>
   );
 };
