@@ -1,6 +1,6 @@
 import { CLOUDINARY_CLOUD_NAME } from '@/constants';
-import { Cloudinary } from '@cloudinary/url-gen';
-import { thumbnail, pad } from '@cloudinary/url-gen/actions/resize';
+import { Cloudinary,  } from '@cloudinary/url-gen';
+import { thumbnail, fill } from '@cloudinary/url-gen/actions/resize';
 import { compass, focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
 import { face } from '@cloudinary/url-gen/qualifiers/focusOn';
 import { max } from '@cloudinary/url-gen/actions/roundCorners';
@@ -15,6 +15,7 @@ import { fillLight } from '@cloudinary/url-gen/actions/adjust';
 import { source } from '@cloudinary/url-gen/actions/overlay';
 import { text } from '@cloudinary/url-gen/qualifiers/source';
 import { Position } from '@cloudinary/url-gen/qualifiers/position';
+
 // Cloudinary instance.
 const cld = new Cloudinary({
   cloud: {
@@ -40,12 +41,12 @@ export const profilePhoto = (imageCldPubId: string) =>
 export const bannerPhoto = (imageCldPubId: string, name: string) => {
   return cld
     .image(imageCldPubId)
+  
     .resize(
-      pad()
+      fill()
         .width(1200)
         .height(297)  // Aspect ratio 5:1
     )
-    // .effect(enhance())
     // Optimize for web
     .delivery(format("auto"))
     .delivery(quality("auto"))
