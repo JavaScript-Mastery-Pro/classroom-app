@@ -1,31 +1,19 @@
-import { useState } from 'react';
 import { ListView } from '@/components/refine-ui/views/list-view';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { InfoIcon, Megaphone, Clock, Users, BookOpen } from 'lucide-react';
 import { useList, useNavigation } from '@refinedev/core';
 import { Class } from '@/types';
 import { AdvancedImage } from '@cloudinary/react';
 import { bannerPhoto } from '@/lib/cloudinary';
+import { formatTime12Hour } from '@/lib/utils';
+import { mockAnnouncements } from '@/constants';
 // import { JoinClassModal } from '@/components/refine-ui/modals/join-class-modal';
 
 export const JoinClassesList = () => {
   const { show } = useNavigation();
-  const [activeTab, setActiveTab] = useState('active');
-  // const [joinModalOpen, setJoinModalOpen] = useState(false);
-
-  const mockAnnouncements = [
-    {
-      id: 1,
-      title: 'How to join a class',
-      message:
-        'Click on any class card to view details, then click the "Join Class" button and enter the class code. You can also join directly from the card by clicking the join button.',
-      priority: 'high',
-      date: '2026-01-15',
-    },
-  ];
 
   // Fetch all classes
   const { query: classesQuery } = useList<Class>({
@@ -37,17 +25,6 @@ export const JoinClassesList = () => {
 
   const allClasses = classesQuery.data?.data || [];
   const activeClasses = allClasses.filter((c) => c.status === 'active');
-  const inactiveClasses = allClasses.filter((c) => c.status === 'inactive');
-
-  // Format time to 12-hour format with AM/PM
-  const formatTime12Hour = (time24: string) => {
-    if (!time24) return '';
-    const [hours, minutes] = time24.split(':');
-    const hour = parseInt(hours, 10);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
-  };
 
   const ClassCard = ({ classItem }: { classItem: Class }) => (
     <Card
@@ -210,7 +187,7 @@ export const JoinClassesList = () => {
       </div>
 
       {/* Announcements Section */}
-      <Card className='border-2 border-teal-600/30 bg-gradient-to-br from-teal-50 to-teal-100 shadow-md transition-shadow duration-300 mb-10 relative overflow-hidden'>
+      <Card className='border-2 border-teal-600/30 bg-gradient-to-br from-teal-50 to-teal-100 shadow-md transition-shadow duration-300 mb-5 relative overflow-hidden'>
         {/* Decorative corner accent */}
         <div className='absolute top-0 right-0 w-32 h-32 bg-teal-600/10 rounded-bl-full' />
         <div className='absolute bottom-0 left-0 w-24 h-24 bg-teal-500/10 rounded-tr-full' />
@@ -266,72 +243,26 @@ export const JoinClassesList = () => {
         </CardContent>
       </Card>
 
-      {/* Classes Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className='w-full'>
-        <TabsList className='grid w-full mx-auto grid-cols-2 h-12 bg-gray-200/50 border border-gray-200'>
-          <TabsTrigger
-            value='active'
-            className='text-base font-semibold data-[state=active]:bg-green-600 data-[state=active]:text-white'
-          >
-            Active Classes ({activeClasses.length})
-          </TabsTrigger>
-          <TabsTrigger
-            value='inactive'
-            className='text-base font-semibold data-[state=active]:bg-gray-600 data-[state=active]:text-white'
-          >
-            Inactive Classes ({inactiveClasses.length})
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value='active' className='mt-4'>
-          {classesQuery.isLoading ? (
-            <div className='flex items-center justify-center h-64'>
-              <p className='text-muted-foreground'>Loading classes...</p>
-            </div>
-          ) : activeClasses.length === 0 ? (
-            <div className='flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200'>
-              <p className='text-2xl font-bold text-gray-400 mb-2'>
-                No Active Classes
-              </p>
-              <p className='text-sm text-gray-500'>
-                There are currently no active classes available to join.
-              </p>
-            </div>
-          ) : (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
-              {activeClasses.map((classItem) => (
-                <ClassCard key={classItem.id} classItem={classItem} />
-              ))}
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value='inactive' className='mt-4'>
-          {classesQuery.isLoading ? (
-            <div className='flex items-center justify-center h-64'>
-              <p className='text-muted-foreground'>Loading classes...</p>
-            </div>
-          ) : inactiveClasses.length === 0 ? (
-            <div className='flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200'>
-              <p className='text-2xl font-bold text-gray-400 mb-2'>
-                No Inactive Classes
-              </p>
-              <p className='text-sm text-gray-500'>
-                There are currently no inactive classes.
-              </p>
-            </div>
-          ) : (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
-              {inactiveClasses.map((classItem) => (
-                <ClassCard key={classItem.id} classItem={classItem} />
-              ))}
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
-
-      {/* Join Class Modal */}
-      {/* <JoinClassModal open={joinModalOpen} onOpenChange={setJoinModalOpen} /> */}
+      {classesQuery.isLoading ? (
+        <div className='flex items-center justify-center h-64'>
+          <p className='text-muted-foreground'>Loading classes...</p>
+        </div>
+      ) : activeClasses.length === 0 ? (
+        <div className='flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200'>
+          <p className='text-2xl font-bold text-gray-400 mb-2'>
+            No Active Classes
+          </p>
+          <p className='text-sm text-gray-500'>
+            There are currently no active classes available to join.
+          </p>
+        </div>
+      ) : (
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+          {activeClasses.map((classItem) => (
+            <ClassCard key={classItem.id} classItem={classItem} />
+          ))}
+        </div>
+      )}
     </ListView>
   );
 };

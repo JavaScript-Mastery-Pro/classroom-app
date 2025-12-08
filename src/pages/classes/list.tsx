@@ -58,7 +58,7 @@ export const ClassesList = () => {
       {
         id: 'banner',
         accessorKey: 'bannerUrl',
-        size: 250,
+        size: 80,
         header: ({ column }) => (
           <div className='flex ml-2 font-bold items-center gap-1'>
             <span>Class Name</span>
@@ -68,7 +68,7 @@ export const ClassesList = () => {
         cell: ({ getValue }) => {
           const bannerUrl = getValue<string>();
           return (
-            <div className='relative flex-shrink-0'>
+            <div className='ml-4 relative flex-shrink-0'>
               <img
                 src={bannerUrl}
                 alt='Banner preview'
@@ -82,7 +82,7 @@ export const ClassesList = () => {
       {
         id: 'name',
         accessorKey: 'name',
-        size: 250,
+        size: 300,
         header: ({ column }) => (
           <div className='flex ml-2 font-bold items-center gap-1'>
             <span>Class Name</span>
@@ -100,7 +100,7 @@ export const ClassesList = () => {
       {
         id: 'status',
         accessorKey: 'status',
-        size: 120,
+        size: 100,
         header: ({ column }) => (
           <div className='flex font-bold items-center gap-1'>
             <span>Status</span>
@@ -127,7 +127,7 @@ export const ClassesList = () => {
       {
         id: 'subject',
         accessorKey: 'subject.name',
-        size: 180,
+        size: 200,
         header: ({ column }) => (
           <div className='flex font-bold items-center gap-1'>
             <span>Subject</span>
@@ -146,7 +146,7 @@ export const ClassesList = () => {
       {
         id: 'teacher',
         accessorKey: 'teacher.name',
-        size: 180,
+        size: 100,
         header: ({ column }) => (
           <div className='flex font-bold items-center gap-1'>
             <span>Teacher</span>
@@ -165,7 +165,7 @@ export const ClassesList = () => {
       {
         id: 'capacity',
         accessorKey: 'capacity',
-        size: 100,
+        size: 80,
         header: ({ column }) => (
           <div className='flex font-bold items-center gap-1'>
             <span>Capacity</span>

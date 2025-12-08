@@ -32,7 +32,7 @@ export const SubjectsList = () => {
       {
         id: 'code',
         accessorKey: 'code',
-        size: 120,
+        size: 80,
         header: ({ column }) => (
           <div className='flex ml-2 font-bold  items-center gap-1'>
             <span>Code</span>
@@ -69,7 +69,7 @@ export const SubjectsList = () => {
       {
         id: 'department',
         accessorKey: 'department',
-        size: 180,
+        size: 150,
         header: ({ column }) => (
           <div className='flex font-bold  items-center gap-1'>
             <span>Department</span>

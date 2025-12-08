@@ -7,6 +7,7 @@ import { useResourceParams, useOne } from '@refinedev/core';
 import { Calendar, Clock } from 'lucide-react';
 import { Class, Subject, User } from '@/types';
 import { bannerPhoto } from '@/lib/cloudinary';
+import { formatTime12Hour } from '@/lib/utils';
 
 export const ClassesShow = () => {
   const { id } = useResourceParams();
@@ -45,16 +46,6 @@ export const ClassesShow = () => {
 
   const subject = subjectData?.data;
   const teacher = teacherData?.data;
-
-  // Format time to 12-hour format with AM/PM
-  const formatTime12Hour = (time24: string) => {
-    if (!time24) return '';
-    const [hours, minutes] = time24.split(':');
-    const hour = parseInt(hours, 10);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
-  };
 
   if (isClassLoading) {
     return (
