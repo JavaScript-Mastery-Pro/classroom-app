@@ -44,14 +44,14 @@ export function Sidebar() {
   const filteredMenuItems = menuItems.filter((item: TreeMenuItem) => {
     const itemName = item.name || '';
 
-    // Student users: Only show Dashboard and Join Classes
+    // Student users: Only show Dashboard and Enrollments
     if (identity?.role === 'student') {
-      return ['dashboard', 'join-classes'].includes(itemName);
+      return ['dashboard', 'enrollments'].includes(itemName);
     }
 
-    // Teacher users: Show Dashboard, Classes, Subjects, and Join Classes (no Faculty)
+    // Teacher users: Show Dashboard, Classes, Subjects, and Enrollments (no Faculty)
     if (identity?.role === 'teacher') {
-      return ['dashboard', 'classes', 'subjects', 'join-classes'].includes(
+      return ['dashboard', 'classes', 'subjects', 'enrollments'].includes(
         itemName
       );
     }

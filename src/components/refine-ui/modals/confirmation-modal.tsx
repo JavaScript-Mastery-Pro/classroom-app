@@ -32,8 +32,7 @@ export const ConfirmationModal = ({
             Are you sure you want to delete?
           </AlertDialogTitle>
           <AlertDialogDescription className='text-muted-foreground'>
-            This action cannot be undone. This will permanently delete the
-            subject and remove all associated data from the system.
+            This action cannot be undone. This will permanently delete the item.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

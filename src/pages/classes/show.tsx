@@ -3,18 +3,27 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { AdvancedImage } from '@cloudinary/react';
 import { ShowView } from '@/components/refine-ui/views/show-view';
-import { useResourceParams, useOne } from '@refinedev/core';
-import { Calendar, Clock } from 'lucide-react';
-import { Class } from '@/types';
+import {
+  useResourceParams,
+  useOne,
+  useGetIdentity,
+  useDelete,
+  useInvalidate,
+} from '@refinedev/core';
+import { Calendar, Clock, Users, Trash2 } from 'lucide-react';
+import { Class, User, UserRole } from '@/types';
 import { bannerPhoto } from '@/lib/cloudinary';
-import { formatTime12Hour } from '@/lib/utils';
+import { formatDate, formatTime12Hour } from '@/lib/utils';
 import { JoinClassModal } from '@/components/refine-ui/modals/join-class-modal';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { ConfirmationModal } from '@/components/refine-ui/modals/confirmation-modal';
 
 export const ClassesShow = () => {
   const { id } = useResourceParams();
   const [open, setOpen] = useState(false);
+  const { data: identity } = useGetIdentity<User>();
+  const invalidate = useInvalidate();
 
   // Fetch class data
   const {
@@ -25,6 +34,30 @@ export const ClassesShow = () => {
   });
 
   const classData = classQueryData?.data;
+  const isStudent = identity?.role === UserRole.STUDENT;
+  const isClassFull =
+    (classData?.students?.length ?? 0) >= (classData?.capacity || 0);
+
+  const {
+    mutate: deleteEnrollment,
+    mutation: { isPending },
+  } = useDelete();
+
+  const onDeleteHandler = (enrollmentId: number) => {
+    deleteEnrollment({
+      resource: 'enrollments',
+      id: enrollmentId,
+    });
+
+    invalidate({
+      resource: 'classes',
+      invalidates: ['detail'],
+      id: id as string,
+    });
+  };
+
+  console.log('User Identity:', identity);
+  console.log('isStudent:', isStudent);
 
   if (isClassLoading) {
     return (
@@ -45,6 +78,8 @@ export const ClassesShow = () => {
       </ShowView>
     );
   }
+
+  console.log('Class Data:', classData);
 
   return (
     <ShowView className='container max-w-6xl mx-auto pb-8 px-2 sm:px-4'>
@@ -103,7 +138,8 @@ export const ClassesShow = () => {
                 {classData?.teacher?.department}
               </p>
               <p className='text-sm font-medium '>
-                Capacity: {classData.capacity} students
+                Capacity: {classData?.students?.length} / {classData.capacity}{' '}
+                students
               </p>
             </div>
           </div>
@@ -168,6 +204,60 @@ export const ClassesShow = () => {
           </>
         )}
 
+        {/* Enrolled Students Section - Only visible to non-students */}
+        {!isStudent && classData.students && classData.students.length > 0 && (
+          <>
+            <Separator />
+            <div>
+              <h2 className='text-lg font-bold text-gray-900 mb-4 flex items-center gap-2'>
+                <div className='w-1 h-5 bg-orange-500 rounded'></div>
+                <Users className='h-5 w-5 text-orange-500' />
+                Enrolled Students ({classData.students.length}/
+                {classData.capacity || 'N/A'})
+              </h2>
+              <div className='bg-gray-50 border border-gray-200 p-4 flex gap-2.5 flex-col'>
+                {classData.students.map((student, index) => {
+                  const displayIndex = index + 1;
+                  return (
+                    <div
+                      key={student.id}
+                      className='text-sm text-gray-500 flex justify-between items-center gap-3 p-3 bg-white rounded-lg border border-gray-200'
+                    >
+                      <div className='flex-1'>
+                        <p className='font-semibold text-gray-900'>
+                          {displayIndex}. {student.name}
+                        </p>
+                        <p className='text-xs text-gray-600'>{student.email}</p>
+                      </div>
+                      <div className='flex items-center gap-3'>
+                        <p className='text-xs text-gray-400'>
+                          joined {formatDate(student.enrolledAt)}
+                        </p>
+
+                        <ConfirmationModal
+                          onClickHandler={() =>
+                            onDeleteHandler(Number(student.enrollmentId))
+                          }
+                          isPending={isPending}
+                        >
+                          <Button
+                            type='button'
+                            variant='ghost'
+                            size='sm'
+                            className='text-red-500 cursor-pointer hover:bg-red-100 hover:text-red-700'
+                          >
+                            <Trash2 className='w-4 h-4' />
+                          </Button>
+                        </ConfirmationModal>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
+
         <Separator />
 
         {/* Join This Class Section */}
@@ -189,15 +279,22 @@ export const ClassesShow = () => {
           </div>
           <Button
             size='lg'
+            disabled={isClassFull}
             onClick={() => setOpen(true)}
-            className='w-full mt-4 cursor-pointer bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold shadow-md hover:shadow-lg transition-all disabled:from-gray-300 disabled:to-gray-400 disabled:text-gray-500'
+            className='w-full mt-4 cursor-pointer bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold shadow-md hover:shadow-lg transition-all disabled:from-gray-400 disabled:to-gray-600 '
           >
-            Join Class
+            {isClassFull
+              ? ' You can no longer join. This class is full.'
+              : 'Join Class'}
           </Button>
         </div>
       </Card>
 
-      <JoinClassModal open={open} onOpenChange={setOpen} />
+      <JoinClassModal
+        classId={classData.id}
+        open={open}
+        onOpenChange={setOpen}
+      />
     </ShowView>
   );
 };

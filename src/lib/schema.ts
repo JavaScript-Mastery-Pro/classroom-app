@@ -46,3 +46,11 @@ export const classSchema = z.object({
   inviteCode: z.string().optional(),
   schedules: z.array(scheduleSchema).optional(),
 });
+
+export const enrollmentSchema = z.object({
+    classId: z.preprocess(
+    (val) => (val === '' || val === undefined || val === null ? undefined : Number(val)),
+    z.number({ required_error: "Class ID is required" }).min(1, "Class ID is required")
+  ),
+    studentId: z.string().min(1, "Student ID is required"),
+});

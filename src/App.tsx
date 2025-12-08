@@ -21,7 +21,7 @@ import { UsersList } from './pages/users/list';
 import { SubjectsList } from './pages/subjects/list';
 import { SubjectsCreate } from './pages/subjects/create';
 import { ClassesList } from './pages/classes/list';
-import { JoinClassesList } from './pages/join-classes';
+import { EnrollmentList } from './pages/enrollments';
 import { dataProvider } from './providers/dataProvider';
 import { UsersEdit } from './pages/users/edit';
 import { SubjectsEdit } from './pages/subjects/edit';
@@ -48,8 +48,8 @@ function App() {
                 },
               },
               {
-                name: 'join-classes',
-                list: '/join-classes',
+                name: 'enrollments',
+                list: '/enrollments',
                 meta: {
                   label: 'Join Classes',
                   icon: '🎓',
@@ -140,7 +140,7 @@ function App() {
                   <Route path='show/:id' element={<ClassesShow />} />
                 </Route>
 
-                <Route path='/join-classes' element={<JoinClassesList />} />
+                <Route path='/enrollments' element={<EnrollmentList />} />
 
                 {/* Refine resource routes */}
                 <Route path='/*' element={<Outlet />} />

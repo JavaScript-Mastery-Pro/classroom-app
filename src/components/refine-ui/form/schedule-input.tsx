@@ -128,7 +128,7 @@ export const ScheduleInput = ({ schedules, onChange }: ScheduleInputProps) => {
           {schedules.map((schedule, index) => (
             <div
               key={index}
-              className='flex items-center justify-between p-3 bg-orange-50 border border-gray-200 rounded-md'
+              className='flex items-center justify-between p-3 bg-teal-50 border border-gray-200 rounded-md'
             >
               <div className='flex items-center text-gray-700 gap-4 text-sm'>
                 <span className='font-bold min-w-[100px]'>{schedule.day}</span>

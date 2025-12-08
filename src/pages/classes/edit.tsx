@@ -271,7 +271,7 @@ export const ClassesEdit = () => {
       <Separator />
 
       <div className='my-4 flex items-center'>
-        <Card className='max-w-3xl gap-2 w-full mx-auto relative overflow-hidden bg-gray-0 border-0'>
+        <Card className='max-w-4xl gap-2 w-full mx-auto relative overflow-hidden bg-gray-0 border-0'>
           <div className='absolute top-0 left-0 right-0 h-2 bg-gradient-orange' />
 
           <CardHeader className='relative z-10'>

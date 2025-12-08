@@ -6,7 +6,7 @@ import { face } from '@cloudinary/url-gen/qualifiers/focusOn';
 import { max } from '@cloudinary/url-gen/actions/roundCorners';
 import {
   backgroundRemoval,
-  grayscale,
+  // grayscale,
   enhance,
 } from '@cloudinary/url-gen/actions/effect';
 import { TextStyle } from "@cloudinary/url-gen/qualifiers/textStyle";
@@ -31,7 +31,7 @@ export const profilePhoto = (imageCldPubId: string) =>
     .effect(enhance())
     .adjust(fillLight().blend(50).bias(5))
     .effect(backgroundRemoval())
-    .effect(grayscale())
+    // .effect(grayscale())
     .roundCorners(max())
     // .border(solid(10, "white"))
     .delivery(format('auto')) // set format to auto

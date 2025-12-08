@@ -66,6 +66,13 @@ export type Class = {
   subject?: Subject;
   teacher?: User;
   inviteCode?: string;
+  students?: {
+    id: string;
+    name: string;
+    email: string;
+    enrolledAt: string;
+    enrollmentId: string;
+  }[];
 };
 
 // ====== Schema inferred types
