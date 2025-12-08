@@ -173,6 +173,8 @@ export const SubjectsCreate = () => {
                   )}
                 />
 
+                <Separator />
+
                 <Button
                   type='submit'
                   size='lg'

@@ -64,7 +64,7 @@ export const ScheduleInput = ({ schedules, onChange }: ScheduleInputProps) => {
         <Label className='mb-5 text-gray-900 font-semibold text-xl'>
           Class Schedule ({schedules.length})
         </Label>
-        <div className='flex flex-col sm:flex-row gap-4 items-end'>
+        <div className='flex flex-col sm:flex-row gap-4 sm:items-end'>
           <div className='flex w-full flex-col gap-2'>
             <Label className='text-gray-900 font-semibold'>Day</Label>
             <Select
@@ -86,34 +86,36 @@ export const ScheduleInput = ({ schedules, onChange }: ScheduleInputProps) => {
             </Select>
           </div>
 
-          <div className='space-y-2'>
-            <Label className='text-gray-900 font-semibold'>Start Time</Label>
-            <Input
-              type='time'
-              value={newSchedule.startTime}
-              onChange={(e) =>
-                setNewSchedule({ ...newSchedule, startTime: e.target.value })
-              }
-              className='bg-gray-0 w-fit h-10 border-2 border-gray-200'
-            />
-          </div>
+          <div className='flex justify-start gap-4'>
+            <div className='space-y-2 '>
+              <Label className='text-gray-900 font-semibold'>Start Time</Label>
+              <Input
+                type='time'
+                value={newSchedule.startTime}
+                onChange={(e) =>
+                  setNewSchedule({ ...newSchedule, startTime: e.target.value })
+                }
+                className='bg-gray-0 w-fit h-10 border-2 border-gray-200'
+              />
+            </div>
 
-          <div className='space-y-2'>
-            <Label className='text-gray-900 font-semibold'>End Time</Label>
-            <Input
-              type='time'
-              value={newSchedule.endTime}
-              onChange={(e) =>
-                setNewSchedule({ ...newSchedule, endTime: e.target.value })
-              }
-              className='bg-gray-0 w-fit h-10 border-2 border-gray-200'
-            />
+            <div className='space-y-2 '>
+              <Label className='text-gray-900 font-semibold'>End Time</Label>
+              <Input
+                type='time'
+                value={newSchedule.endTime}
+                onChange={(e) =>
+                  setNewSchedule({ ...newSchedule, endTime: e.target.value })
+                }
+                className='bg-gray-0 w-fit h-10 border-2 border-gray-200'
+              />
+            </div>
           </div>
 
           <Button
             type='button'
             onClick={handleAddSchedule}
-            className='h-10 min-w-32 bg-orange-500 hover:bg-orange-600'
+            className='h-10 lg:min-w-32 bg-gradient-teal hover:bg-orange-600'
           >
             <Plus className='w-4 h-4 mr-1' />
             Add
@@ -135,6 +137,7 @@ export const ScheduleInput = ({ schedules, onChange }: ScheduleInputProps) => {
                   {formatTime12Hour(schedule.endTime)}
                 </span>
               </div>
+
               <Button
                 type='button'
                 variant='ghost'

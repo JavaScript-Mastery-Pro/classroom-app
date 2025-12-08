@@ -231,9 +231,9 @@ export const ClassesList = () => {
             </div>
 
             {/* Filter and Create Button Row */}
-            <div className='flex gap-2 w-full sm:w-auto'>
+            <div className='flex flex-col sm:flex-row gap-2 w-full sm:w-auto'>
               <Select value={subjectFilter} onValueChange={setSubjectFilter}>
-                <SelectTrigger className='flex-1 bg-white text-orange-600 sm:flex-initial sm:w-[180px] h-11'>
+                <SelectTrigger className='flex-1 w-full bg-white text-orange-600 sm:flex-initial sm:w-[180px] h-11'>
                   <SelectValue placeholder='Filter by subject' />
                 </SelectTrigger>
                 <SelectContent>
@@ -247,7 +247,7 @@ export const ClassesList = () => {
               </Select>
 
               <Select value={teacherFilter} onValueChange={setTeacherFilter}>
-                <SelectTrigger className='flex-1 bg-white text-orange-600 sm:flex-initial sm:w-[180px] h-11'>
+                <SelectTrigger className='flex-1 w-full bg-white text-orange-600 sm:flex-initial sm:w-[180px] h-11'>
                   <SelectValue placeholder='Filter by teacher' />
                 </SelectTrigger>
                 <SelectContent>

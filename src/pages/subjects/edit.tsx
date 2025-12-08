@@ -241,7 +241,7 @@ export const SubjectsEdit = () => {
                     </FormItem>
                   )}
                 />
-                <section className='flex justify-between w-full gap-2'>
+                <section className='flex flex-col sm:flex-row justify-between w-full gap-2'>
                   <ConfirmationModal
                     onClickHandler={onDeleteHandler}
                     isPending={isPending}

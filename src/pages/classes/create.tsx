@@ -355,6 +355,8 @@ export const ClassesCreate = () => {
                   />
                 </div>
 
+                <Separator />
+
                 <Button
                   type='submit'
                   size='lg'

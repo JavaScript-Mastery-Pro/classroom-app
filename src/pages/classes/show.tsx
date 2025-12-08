@@ -77,7 +77,7 @@ export const ClassesShow = () => {
             </Badge>
           </div>
 
-          <div className='grid sm:grid-cols-2 mt-8 gap-4 text-sm'>
+          <div className='grid sm:grid-cols-2 mt-8 gap-10 text-sm'>
             <div className='space-y-2'>
               <p className='text-xs mb-3 font-bold text-gray-400 uppercase tracking-wider'>
                 👨‍🏫 Instructor

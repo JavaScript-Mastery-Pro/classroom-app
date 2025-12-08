@@ -290,8 +290,10 @@ export const ClassesEdit = () => {
         <p className='mt-2'>
           Provide the required information below to update.
         </p>
-        <div className='flex gap-2'>
-          <Button onClick={() => back()}>Go Back</Button>
+        <div className='flex flex-col md:flex-row max-sm:w-full border gap-2'>
+          <Button className='max-sm:w-full' onClick={() => back()}>
+            Go Back
+          </Button>
           <Button
             className='bg-gradient-teal cursor-pointer'
             rel='noopener noreferrer'
@@ -539,7 +541,7 @@ export const ClassesEdit = () => {
                 <Separator />
 
                 {/* Invite Code Section */}
-                <div className='space-y-3 p-4 bg-gray-50 rounded-lg border border-gray-200'>
+                <div className='space-y-3  p-4 bg-gray-50 rounded-lg border border-gray-200'>
                   <Label className='text-gray-900 font-semibold text-sm'>
                     Invite Code
                   </Label>
@@ -547,8 +549,8 @@ export const ClassesEdit = () => {
                     Students use this code to join the class. You can regenerate
                     it if needed.
                   </p>
-                  <div className='flex gap-2 items-center'>
-                    <div className='flex-1 p-2 bg-white rounded-lg border border-orange-200'>
+                  <div className='flex-col lg:flex-row flex gap-2 items-center'>
+                    <div className='flex-1 w-full p-2 bg-white rounded-lg border border-orange-200'>
                       <p className='text-xl font-black text-orange-600 tracking-widest font-mono text-center'>
                         {inviteCode
                           ? formatInviteCode(inviteCode)
@@ -561,7 +563,7 @@ export const ClassesEdit = () => {
                       size='lg'
                       onClick={handleCopyCode}
                       disabled={!inviteCode}
-                      className='border h-11 border-orange-600 hover:bg-orange-50'
+                      className='border max-lg:w-full h-11 border-orange-600 hover:bg-orange-50'
                     >
                       {copied ? (
                         <>
@@ -581,7 +583,7 @@ export const ClassesEdit = () => {
                       size='lg'
                       onClick={handleRegenerateCode}
                       disabled={!inviteCode || regenerating}
-                      className='border h-11 border-teal-600 hover:bg-gray-50'
+                      className='border max-lg:w-full h-11 border-teal-600 hover:bg-gray-50'
                     >
                       <RefreshCw
                         className={`h-4 w-4 mr-2 ${
@@ -595,7 +597,7 @@ export const ClassesEdit = () => {
 
                 <Separator />
 
-                <section className='flex justify-between w-full gap-2'>
+                <section className='flex flex-col sm:flex-row justify-between w-full gap-2'>
                   <ConfirmationModal
                     onClickHandler={onDeleteHandler}
                     isPending={isPending}

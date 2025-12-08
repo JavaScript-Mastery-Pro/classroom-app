@@ -15,7 +15,6 @@ import { User } from '@/types';
 import { useTable } from '@refinedev/react-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/refine-ui/data-table/data-table';
-import { DataTableSorter } from '@/components/refine-ui/data-table/data-table-sorter';
 import { cn } from '@/lib/utils';
 import { AdvancedImage } from '@cloudinary/react';
 import { profilePhoto } from '@/lib/cloudinary';
@@ -67,11 +66,8 @@ export const UsersList = () => {
         id: 'email',
         accessorKey: 'email',
         size: 250,
-        header: ({ column }) => (
-          <div className='flex font-bold items-center gap-1'>
-            <span>Email</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold items-center gap-1'>Email</div>
         ),
         cell: ({ getValue }) => {
           const email = getValue<string>();

@@ -14,7 +14,6 @@ import { CreateButton } from '@/components/refine-ui/buttons/create';
 import { useTable } from '@refinedev/react-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/refine-ui/data-table/data-table';
-import { DataTableSorter } from '@/components/refine-ui/data-table/data-table-sorter';
 import { Badge } from '@/components/ui/badge';
 
 import { DEPARTMENT_OPTIONS } from '@/constants';
@@ -32,12 +31,9 @@ export const SubjectsList = () => {
       {
         id: 'code',
         accessorKey: 'code',
-        size: 80,
-        header: ({ column }) => (
-          <div className='flex ml-2 font-bold  items-center gap-1'>
-            <span>Code</span>
-            <DataTableSorter column={column} />
-          </div>
+        size: 100,
+        header: () => (
+          <div className='flex ml-2 font-bold  items-center gap-1'>Code</div>
         ),
         cell: ({ getValue }) => {
           const value = getValue<string>();
@@ -52,11 +48,8 @@ export const SubjectsList = () => {
         id: 'name',
         accessorKey: 'name',
         size: 200,
-        header: ({ column }) => (
-          <div className='flex font-bold  items-center gap-1'>
-            <span>Subject Name</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold  items-center gap-1'>Subject Name</div>
         ),
         cell: ({ getValue }) => {
           const name = getValue<string>();
@@ -70,11 +63,8 @@ export const SubjectsList = () => {
         id: 'department',
         accessorKey: 'department',
         size: 150,
-        header: ({ column }) => (
-          <div className='flex font-bold  items-center gap-1'>
-            <span>Department</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold  items-center gap-1'>Department</div>
         ),
         cell: ({ getValue }) => {
           const value = getValue<string>();
@@ -92,11 +82,8 @@ export const SubjectsList = () => {
         id: 'description',
         accessorKey: 'description',
         size: 300,
-        header: ({ column }) => (
-          <div className='flex font-bold  items-center gap-1'>
-            <span>Description</span>
-            <DataTableSorter column={column} />
-          </div>
+        header: () => (
+          <div className='flex font-bold  items-center gap-1'>Description</div>
         ),
         cell: ({ getValue }) => {
           const description = getValue<string>();
