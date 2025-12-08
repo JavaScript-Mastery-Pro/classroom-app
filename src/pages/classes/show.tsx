@@ -51,7 +51,7 @@ export const ClassesShow = () => {
         <AdvancedImage
           cldImg={bannerPhoto(classData.bannerCldPubId, classData.name)}
           alt='Class Banner'
-          className='w-full mt-5 mb-1 aspect-[5/1] rounded-xl object-cover border-2 border-gray-100/10 shadow-md'
+          className='w-full mt-5 mb-1 bg-gradient-orange aspect-[5/1] rounded-xl object-cover shadow-md'
         />
       )}
 
