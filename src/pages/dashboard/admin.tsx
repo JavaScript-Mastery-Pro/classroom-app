@@ -199,7 +199,7 @@ export const AdminDashboard = () => {
           <Button
             onClick={() => navigate('/join-classes')}
             size='lg'
-            className='w-full cursor-pointer justify-start h-12 font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-orange'
+            className='w-full cursor-pointer justify-start h-12 font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-orange-light2'
           >
             <div className='mr-2 p-1.5 rounded-md bg-white/20'>
               <Users className='h-4 w-4' />

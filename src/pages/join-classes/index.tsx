@@ -32,7 +32,7 @@ export const JoinClassesList = () => {
       className='pt-0 cursor-pointer group overflow-hidden hover:shadow-xl transition-all duration-300 border-2 border-gray-200 hover:-translate-y-1 bg-white'
     >
       {/* Banner Image with Overlay */}
-      <div className='relative h-24 overflow-hidden bg-gradient-to-br from-orange-100 to-teal-100'>
+      <div className='relative h-28 overflow-hidden bg-gradient-to-br from-orange-100 to-teal-100'>
         <img
           src={classItem.bannerUrl}
           alt='Class Banner'
@@ -41,7 +41,7 @@ export const JoinClassesList = () => {
         <div className='absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-transparent' />
 
         {/* Class Name Overlay */}
-        <div className='absolute bottom-0 left-0 right-0 px-4 py-8 bg-gradient-to-t from-black/40 to-transparent'>
+        <div className='absolute bottom-0 left-0 right-0 px-4 py-10 bg-gradient-to-t from-black/40 to-transparent'>
           <span className='text-base font-bold text-white/90 line-clamp-1'>
             {classItem?.subject?.department}
           </span>
@@ -66,7 +66,7 @@ export const JoinClassesList = () => {
           <p className='text-sm font-semibold text-orange-600'>
             {classItem?.subject?.code}
           </p>
-          <h3 className='text-xl font-bold mb-1 '>{classItem.name}</h3>
+          <h3 className='text-xl font-bold mb-1 truncate'>{classItem.name}</h3>
           <div className='mb-4 text-sm text-gray-700 leading-relaxed line-clamp-2'>
             {classItem.description}
           </div>
@@ -75,26 +75,24 @@ export const JoinClassesList = () => {
         {/* Class Details */}
         <div className='space-y-2 flex-1'>
           {/* Subject */}
-          {classItem.capacity && (
-            <div className='flex items-center gap-3'>
-              <div className='flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg'>
-                <BookOpen className='h-4 w-4 text-gray-600' />
-              </div>
-              <div className='flex-1'>
-                <p className='text-xs font-medium text-gray-500 mb-0.5'>
-                  Subject
-                </p>
-                <p className='text-sm font-bold text-gray-900'>
-                  {classItem?.subject?.name}
-                </p>
-              </div>
+          <div className='flex items-center gap-3'>
+            <div className='flex items-center justify-center w-10 h-10 bg-orange-50 rounded-lg'>
+              <BookOpen className='h-4 w-4 text-orange-600' />
             </div>
-          )}
+            <div className='flex-1'>
+              <p className='text-xs font-medium text-gray-500 mb-0.5'>
+                Subject
+              </p>
+              <p className='text-sm font-bold text-gray-900'>
+                {classItem?.subject?.name}
+              </p>
+            </div>
+          </div>
 
           {/* Teacher */}
           <div className='flex items-center gap-3'>
-            <div className='flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg'>
-              <Users className='h-4 w-4 text-gray-600' />
+            <div className='flex items-center justify-center w-10 h-10 bg-orange-50 rounded-lg'>
+              <Users className='h-4 w-4 text-orange-600' />
             </div>
             <div className='flex-1 min-w-0'>
               <p className='text-xs font-medium text-gray-500 mb-0.5'>
@@ -110,18 +108,22 @@ export const JoinClassesList = () => {
           <div className='pt-2'>
             <div className='flex gap-3 items-start'>
               {/* Icon */}
-              <div className='flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg'>
-                <Clock className='h-4 w-4 text-gray-600' />
+              <div className='flex items-center justify-center w-10 h-10 bg-orange-50 rounded-lg'>
+                <Clock className='h-4 w-4 text-orange-600' />
               </div>
 
               {/* Schedule List */}
               <ul className='space-y-1'>
                 <p className='text-xs font-medium text-gray-500'>Schedule</p>
                 {classItem?.schedules?.slice(0, 2).map((schedule, idx) => (
-                  <li key={idx} className='text-sm flex items-center gap-2'>
+                  <li
+                    key={idx}
+                    className='text-sm text-gray-400 flex items-center gap-1.5'
+                  >
                     <span className='font-bold text-gray-900'>
                       {schedule.day}
                     </span>
+                    •
                     <span className='text-gray-600 font-medium'>
                       {formatTime12Hour(schedule.startTime)} –{' '}
                       {formatTime12Hour(schedule.endTime)}
@@ -238,7 +240,7 @@ export const JoinClassesList = () => {
           </p>
         </div>
       ) : (
-        <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 2xl:gap-7'>
           {activeClasses.map((classItem) => (
             <ClassCard key={classItem.id} classItem={classItem} />
           ))}

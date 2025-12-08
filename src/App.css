@@ -189,6 +189,11 @@
     background: linear-gradient(135deg, var(--orange-50) 0%, var(--orange-100) 100%);
   }
 
+  .bg-gradient-orange-light2 {
+    background: linear-gradient(135deg, var(--orange-500) 0%, var(--orange-400) 100%);
+  }
+
+
   /* Background Gradients - Teal */
   .bg-gradient-teal {
     background: linear-gradient(135deg, var(--teal-500) 0%, var(--teal-700) 100%);

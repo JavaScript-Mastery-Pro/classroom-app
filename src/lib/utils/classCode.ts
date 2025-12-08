@@ -22,15 +22,6 @@ export function generateInviteCode(): string {
 }
 
 /**
- * Format invite code for display with a dash
- * ABC123 -> ABC-123
- */
-export function formatInviteCode(code: string): string {
-  if (!code || code.length !== 6) return code;
-  return `${code.slice(0, 3)}-${code.slice(3)}`;
-}
-
-/**
  * Remove formatting from invite code
  * ABC-123 -> ABC123
  */

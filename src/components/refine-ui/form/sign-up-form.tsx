@@ -270,6 +270,7 @@ export const SignUpForm = () => {
                     <FormControl>
                       <InputPassword
                         {...field}
+                        placeholder='Enter your password'
                         className='bg-gray-0 border-2 border-gray-200 transition-all duration-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 h-11'
                       />
                     </FormControl>

@@ -39,10 +39,10 @@ import {
 import { Loader2, Copy, RefreshCw, Check } from 'lucide-react';
 import { Class, ClassSchedule, Subject, User } from '@/types';
 import { classSchema } from '@/lib/schema';
-import { ConfirmationModal } from '@/components/refine-ui/layout/confirmation-modal';
+import { ConfirmationModal } from '@/components/refine-ui/modals/confirmation-modal';
 import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_UPLOAD_URL } from '@/constants';
 import { bannerPhoto } from '@/lib/cloudinary';
-import { formatInviteCode } from '@/lib/utils/classCode';
+import { generateInviteCode } from '@/lib/utils/classCode';
 
 export const ClassesEdit = () => {
   const { id } = useResourceParams();
@@ -73,6 +73,7 @@ export const ClassesEdit = () => {
       status: 'active',
       bannerUrl: '',
       bannerCldPubId: '',
+      inviteCode: '',
       schedules: [],
     },
   });
@@ -86,15 +87,6 @@ export const ClassesEdit = () => {
     getValues,
   } = form;
 
-  console.log('Form State:', {
-    isSubmitting,
-    values: getValues(),
-  });
-
-  console.log('query:', query?.data);
-  console.log('Errors:', form.formState.errors);
-  console.log('updateBanner:', updateBanner);
-
   // Submit handler with banner upload
   const onSubmit = async (values: {
     name: string;
@@ -105,18 +97,10 @@ export const ClassesEdit = () => {
     description?: string;
     bannerUrl?: string;
     bannerCldPubId?: string;
+    inviteCode?: string;
     schedules?: ClassSchedule[];
   }) => {
     try {
-      console.log(
-        'Editing class - updateBanner:',
-        updateBanner,
-        'banner files:',
-        banner
-      );
-
-      console.log('updateBanner:', updateBanner);
-
       // Upload banner if a new one is provided and updateBanner is true
       if (updateBanner && banner?.length > 0) {
         console.log('Uploading new banner to Cloudinary...');
@@ -134,24 +118,20 @@ export const ClassesEdit = () => {
         }
 
         const data = await response.json();
-        console.log('Cloudinary response:', data);
-
-        console.log('Banner uploaded successfully:', data);
 
         values.bannerUrl = data.url;
         values.bannerCldPubId = data.public_id;
       }
 
-      // Add schedules to values
+      // Add schedules and invite code to final values
       values.schedules = schedules;
+      values.inviteCode = inviteCode;
 
-      console.log('Final values being submitted:', values);
       await onFinish(values);
       setUpdateBanner(false);
       setBanner([]);
     } catch (error) {
       console.error('Error updating class:', error);
-      // Don't throw to allow error to be handled by form
     }
   };
 
@@ -200,43 +180,10 @@ export const ClassesEdit = () => {
       setSchedules(classData.schedules || []);
     }
     if (classData && !inviteCode) {
-      // Only set the existing invite code, don't generate a new one
       setInviteCode(classData.inviteCode || '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [classData]);
-
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(inviteCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleRegenerateCode = async () => {
-    setRegenerating(true);
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/classes/${id}/regenerate-code`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setInviteCode(data.inviteCode);
-        setCopied(false);
-      }
-    } catch (error) {
-      console.error('Error regenerating code:', error);
-    } finally {
-      setRegenerating(false);
-    }
-  };
 
   // Delete hook & handler
   const {
@@ -255,6 +202,23 @@ export const ClassesEdit = () => {
     });
     reset();
     list('classes');
+  };
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(inviteCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleRegenerateCode = async () => {
+    {
+      const newCode = generateInviteCode();
+      setRegenerating(true);
+      setTimeout(() => {
+        setInviteCode(newCode);
+        setRegenerating(false);
+      }, 1000);
+    }
   };
 
   const teachers = teachersQuery.data?.data || [];
@@ -552,9 +516,7 @@ export const ClassesEdit = () => {
                   <div className='flex-col lg:flex-row flex gap-2 items-center'>
                     <div className='flex-1 w-full p-2 bg-white rounded-lg border border-orange-200'>
                       <p className='text-xl font-black text-orange-600 tracking-widest font-mono text-center'>
-                        {inviteCode
-                          ? formatInviteCode(inviteCode)
-                          : 'Loading...'}
+                        {inviteCode ? inviteCode : 'Loading...'}
                       </p>
                     </div>
                     <Button
@@ -563,7 +525,7 @@ export const ClassesEdit = () => {
                       size='lg'
                       onClick={handleCopyCode}
                       disabled={!inviteCode}
-                      className='border max-lg:w-full h-11 border-orange-600 hover:bg-orange-50'
+                      className='border cursor-pointer max-lg:w-full h-11 border-orange-600 bg-orange-50'
                     >
                       {copied ? (
                         <>
@@ -582,8 +544,7 @@ export const ClassesEdit = () => {
                       variant='outline'
                       size='lg'
                       onClick={handleRegenerateCode}
-                      disabled={!inviteCode || regenerating}
-                      className='border max-lg:w-full h-11 border-teal-600 hover:bg-gray-50'
+                      className='border cursor-pointer max-lg:w-full h-11 border-teal-600 bg-teal-50'
                     >
                       <RefreshCw
                         className={`h-4 w-4 mr-2 ${

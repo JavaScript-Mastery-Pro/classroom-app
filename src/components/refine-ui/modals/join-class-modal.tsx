@@ -14,7 +14,7 @@ import {
   useNotification,
   useGetIdentity,
 } from '@refinedev/core';
-import { cleanInviteCode, formatInviteCode } from '@/lib/utils/classCode';
+import { cleanInviteCode } from '@/lib/utils/classCode';
 import { CheckCircle2 } from 'lucide-react';
 import { User } from '@/types';
 
@@ -135,7 +135,7 @@ export const JoinClassModal = ({ open, onOpenChange }: JoinClassModalProps) => {
             <Input
               id='inviteCode'
               placeholder='ABC123'
-              value={formatInviteCode(inviteCode)}
+              value={inviteCode}
               onChange={handleCodeChange}
               className={`text-center text-2xl font-bold tracking-widest uppercase h-14 ${
                 error ? 'border-red-500 focus-visible:ring-red-500' : ''

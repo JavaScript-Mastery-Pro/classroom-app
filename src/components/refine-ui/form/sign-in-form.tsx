@@ -124,6 +124,7 @@ export const SignInForm = () => {
                     <FormControl>
                       <InputPassword
                         {...field}
+                        placeholder='Enter your password'
                         className='bg-gray-0 border-2 border-gray-200 transition-all duration-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 h-11'
                       />
                     </FormControl>
@@ -138,7 +139,9 @@ export const SignInForm = () => {
                 className='w-full mt-7 h-12 font-semibold text-white shadow-lg cursor-pointer bg-gradient-orange-diagonal'
                 disabled={form.formState.isSubmitting || isPending}
               >
-                {form.formState.isSubmitting ? 'Signing in...' : 'Sign in'}
+                {form.formState.isSubmitting || isPending
+                  ? 'Signing in...'
+                  : 'Sign in'}
               </Button>
             </form>
           </Form>

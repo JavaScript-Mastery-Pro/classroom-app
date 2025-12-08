@@ -38,7 +38,7 @@ import { Loader2 } from 'lucide-react';
 import { FacultyFormValues, User } from '@/types';
 import { EditView } from '@/components/refine-ui/views/edit-view';
 import { Breadcrumb } from '@/components/refine-ui/layout/breadcrumb';
-import { ConfirmationModal } from '@/components/refine-ui/layout/confirmation-modal';
+import { ConfirmationModal } from '@/components/refine-ui/modals/confirmation-modal';
 import { facultySchema } from '@/lib/schema';
 
 export const UsersEdit = () => {

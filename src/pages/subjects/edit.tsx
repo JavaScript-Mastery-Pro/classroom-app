@@ -36,7 +36,7 @@ import {
 import { Loader2 } from 'lucide-react';
 import { Subject } from '@/types';
 import { subjectSchema } from '@/lib/schema';
-import { ConfirmationModal } from '@/components/refine-ui/layout/confirmation-modal';
+import { ConfirmationModal } from '@/components/refine-ui/modals/confirmation-modal';
 
 export const SubjectsEdit = () => {
   const { id } = useResourceParams();

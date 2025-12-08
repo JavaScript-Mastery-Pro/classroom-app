@@ -43,5 +43,6 @@ export const classSchema = z.object({
   status: z.enum(["active", "inactive"]),
   bannerUrl: z.string().optional(),
   bannerCldPubId: z.string().optional(),
+  inviteCode: z.string().optional(),
   schedules: z.array(scheduleSchema).optional(),
 });

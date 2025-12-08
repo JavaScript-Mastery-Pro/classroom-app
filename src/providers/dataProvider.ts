@@ -86,6 +86,12 @@ export const dataProvider: DataProvider = {
     const response = await apiClient.delete(`/${resource}/${id}`);
     return { success: true, data: response.data };
   },
+
+  custom: async ({ url }) => {
+    const response = await apiClient.post(url);
+    return { success: true, data: response.data };
+  },
+
   getApiUrl: function (): string {
     throw new Error("Function not implemented.");
   }
