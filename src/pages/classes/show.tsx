@@ -45,7 +45,7 @@ export const ClassesShow = () => {
   console.log('classData frontend', classData);
 
   return (
-    <ShowView className='container max-w-7xl mx-auto pb-8 px-2 sm:px-4'>
+    <ShowView className='container max-w-6xl mx-auto pb-8 px-2 sm:px-4'>
       {/* Banner */}
       {classData.bannerCldPubId && (
         <AdvancedImage
