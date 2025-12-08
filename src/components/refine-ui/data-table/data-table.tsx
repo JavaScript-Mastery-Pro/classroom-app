@@ -20,10 +20,12 @@ import { cn } from '@/lib/utils';
 
 type DataTableProps<TData extends BaseRecord> = {
   table: UseTableReturnType<TData, HttpError>;
+  onRowClick?: (row: TData) => void;
 };
 
 export function DataTable<TData extends BaseRecord>({
   table,
+  onRowClick,
 }: DataTableProps<TData>) {
   const {
     reactTable: { getHeaderGroups, getRowModel, getAllColumns },
@@ -165,6 +167,8 @@ export function DataTable<TData extends BaseRecord>({
                   <TableRow
                     key={row.original?.id ?? row.id}
                     data-state={row.getIsSelected() && 'selected'}
+                    onClick={() => onRowClick?.(row.original)}
+                    className={cn(onRowClick && 'cursor-pointer hover:bg-muted/50')}
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (

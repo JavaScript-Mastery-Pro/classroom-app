@@ -151,7 +151,7 @@ export const ProfilePage = () => {
                 <div className='relative w-full rounded-xl border-2 border-orange-600/20 bg-gradient-to-r from-orange-50/50 to-orange-100/30 p-5'>
                   <div className='flex flex-col sm:flex-row items-center gap-4'>
                     <div className='relative flex-shrink-0'>
-                      <UserAvatar size='large' />
+                      <UserAvatar size='large' user={user} />
                     </div>
 
                     <div className='flex-1 text-center sm:text-left'>

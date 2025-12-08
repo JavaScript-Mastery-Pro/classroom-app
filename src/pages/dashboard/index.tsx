@@ -6,9 +6,7 @@ import type { User } from '@/types';
 
 export const Dashboard = () => {
   const { data: identity, isLoading } = useGetIdentity<User>();
-
-  console.log('User identity in Dashboard:', identity);
-
+  console.log('Dashboard identity:', identity);
   if (isLoading) {
     return (
       <div className='flex h-96 items-center justify-center'>

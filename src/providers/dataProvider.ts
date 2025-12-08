@@ -26,14 +26,25 @@ export const dataProvider: DataProvider = {
         if (resource === 'users') {
           if (field === 'role') params.roles = value;
           if (field === 'name') params.searchQuery = value;
-        } 
-        
+        }
+
         if (resource === 'subjects') {
           if (field === 'department') params.department = value;
           if (field === 'name') params.searchQuery = value;
         }
+
+        if (resource === 'classes') {
+          if (field === 'subjectId') params.subjectId = value;
+          if (field === 'teacherId') params.teacherId = value;
+          if (field === 'name') params.searchQuery = value;
+        }
       }
     });
+
+    if (resource === 'classes') {
+      console.log('Classes API - Params being sent:', params);
+      console.log('Classes API - Filters:', filters);
+    }
 
     const response = await apiClient.get(`/${resource}`, { params });
 
@@ -41,18 +52,26 @@ export const dataProvider: DataProvider = {
     const data = response.data.data || response.data;
     const total = response.data.pagination?.total || data.length;
 
+        console.log("Resource:", resource);
+        console.log("Fetching list for user resource:", data);
+
     return { success: true, data, total };
   },
 
   update: async ({ resource, id, variables }) => {
     const response = await apiClient.put(`/${resource}/${id}`, variables);
-    localStorage.setItem('user', JSON.stringify(response.data[0]));
+
+    console.log("Resource:", resource);
+    console.log(`Updating ${resource}:`, response.data);
     return { success: true, data: response.data[0] };
   },
 
   getOne: async ({ resource, id }) => {
     const response = await apiClient.get(`/${resource}/${id}`);
-    return {success: true, data: response.data };
+
+    console.log("Resource:", resource);
+    console.log(`Fetching one for ${resource}:`, response.data);
+    return {success: true, data: response.data[0] };
   },
 
   create: async ({ resource, variables }) => {

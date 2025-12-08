@@ -49,7 +49,6 @@ export const SignInForm = () => {
     try {
       login(values, {
         onSuccess: (data) => {
-          console.log('Login:', data);
           //Since the methods of authProvider always return a resolved promise, you can handle errors by using the success value in the response
           if (data.success === false) {
             toast.error(data.error?.message, {

@@ -19,10 +19,11 @@ import { DataTableSorter } from '@/components/refine-ui/data-table/data-table-so
 import { cn } from '@/lib/utils';
 import { AdvancedImage } from '@cloudinary/react';
 import { profilePhoto } from '@/lib/cloudinary';
-import { ShowButton } from '@/components/refine-ui/buttons/show';
 import { Card } from '@/components/ui/card';
+import { useNavigation } from '@refinedev/core';
 
-export const FacultyList = () => {
+export const UsersList = () => {
+  const { edit } = useNavigation();
   const [globalFilter, setGlobalFilter] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('all');
 
@@ -131,27 +132,6 @@ export const FacultyList = () => {
           );
         },
       },
-      {
-        id: 'actions',
-        size: 100,
-        header: '',
-        cell: ({ row }) => (
-          <div
-            className='flex font-bold items-center gap-2'
-            onClick={(e) => e.stopPropagation()}
-          >
-            <ShowButton
-              resource='users'
-              recordItemId={row.original.id}
-              size='sm'
-              variant='outline'
-            >
-              View
-            </ShowButton>
-          </div>
-        ),
-        enableSorting: false,
-      },
     ],
     []
   );
@@ -162,7 +142,7 @@ export const FacultyList = () => {
       resource: 'users',
       pagination: {
         pageSize: 10,
-        mode: 'server',
+        mode: 'server', // Added server-side pagination
       },
       filters: {
         permanent: [
@@ -239,7 +219,12 @@ export const FacultyList = () => {
 
       <Card className='w-full px-4 relative'>
         <div className='absolute top-0 rounded-t-lg left-0 right-0 h-2 bg-gradient-orange' />
-        <DataTable table={table} />
+        <DataTable
+          table={table}
+          onRowClick={(user) => {
+            edit('users', user.id);
+          }}
+        />
       </Card>
     </ListView>
   );

@@ -124,7 +124,7 @@ export const FileUploader = ({
           <img
             src={previewUrl}
             alt='Banner preview'
-            className='w-full h-48 rounded-lg object-cover shadow-lg'
+            className='w-full aspect-[5/1] rounded-lg object-cover shadow-lg'
           />
 
           <Button
@@ -138,7 +138,7 @@ export const FileUploader = ({
           </Button>
         </section>
       ) : (
-        <section className='flex flex-col items-center justify-center p-8 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 cursor-pointer hover:border-orange-400 hover:bg-orange-50/50 transition-all duration-300'>
+        <section className='flex aspect-[4/1]  flex-col items-center justify-center p-8 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 cursor-pointer hover:border-orange-400 hover:bg-orange-50/50 transition-all duration-300'>
           <input
             id={`file-upload-${type}`}
             type='file'
@@ -152,8 +152,7 @@ export const FileUploader = ({
           >
             <Upload className='h-12 w-12 mx-auto mb-3 text-orange-600' />
             <p className='text-sm font-bold text-gray-900 mb-1'>
-              <span className='text-orange-600'>Click to upload</span> or drag
-              and drop
+              <span className='text-orange-600'>Click to upload</span>
             </p>
             <p className='text-xs text-gray-900/60'>{maxSizeText}</p>
           </label>

@@ -17,12 +17,17 @@ import { Register } from './pages/register';
 import { Dashboard } from './pages/dashboard';
 import { authProvider } from './providers/authProvider';
 import { ProfilePage } from './pages/profile';
-import { FacultyList } from './pages/faculty/list';
+import { UsersList } from './pages/users/list';
 import { SubjectsList } from './pages/subjects/list';
 import { SubjectsCreate } from './pages/subjects/create';
 import { ClassesList } from './pages/classes/list';
 import { JoinClassesList } from './pages/join-classes';
 import { dataProvider } from './providers/dataProvider';
+import { UsersEdit } from './pages/users/edit';
+import { SubjectsEdit } from './pages/subjects/edit';
+import { ClassesCreate } from './pages/classes/create';
+import { ClassesEdit } from './pages/classes/edit';
+import { ClassesShow } from './pages/classes/show';
 
 function App() {
   return (
@@ -43,10 +48,10 @@ function App() {
                 },
               },
               {
-                name: 'faculty',
-                list: '/faculty',
-                edit: '/faculty/edit/:id',
-                show: '/faculty/show/:id',
+                name: 'users',
+                list: '/users',
+                edit: '/users/edit/:id',
+                show: '/users/show/:id',
                 meta: {
                   label: 'Faculty',
                   icon: '👨‍🏫',
@@ -117,21 +122,22 @@ function App() {
 
                 <Route path='/profile' element={<ProfilePage />} />
 
-                <Route path='faculty'>
-                  <Route index element={<FacultyList />} />
-                  {/* <Route path="edit/:id" element={<FacultyCreate />} /> */}
+                <Route path='users'>
+                  <Route index element={<UsersList />} />
+                  <Route path='edit/:id' element={<UsersEdit />} />
                 </Route>
 
                 <Route path='subjects'>
                   <Route index element={<SubjectsList />} />
                   <Route path='create' element={<SubjectsCreate />} />
-                  {/* <Route path="edit/:id" element={<SubjectsEdit />} /> */}
+                  <Route path='edit/:id' element={<SubjectsEdit />} />
                 </Route>
 
                 <Route path='classes'>
                   <Route index element={<ClassesList />} />
-                  {/* <Route path="create" element={<ClassesCreate />} /> */}
-                  {/* <Route path="edit/:id" element={<ClassesEdit />} /> */}
+                  <Route path='create' element={<ClassesCreate />} />
+                  <Route path='edit/:id' element={<ClassesEdit />} />
+                  <Route path='show/:id' element={<ClassesShow />} />
                 </Route>
 
                 <Route path='/join-classes' element={<JoinClassesList />} />

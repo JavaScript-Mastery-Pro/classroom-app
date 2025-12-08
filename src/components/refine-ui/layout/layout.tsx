@@ -15,7 +15,7 @@ export function Layout({ children }: PropsWithChildren) {
         <main
           className={cn(
             '@container/main',
-            'grain-texture-light',
+            'grain-texture-light ',
             'mx-auto',
             'relative',
             'w-full',

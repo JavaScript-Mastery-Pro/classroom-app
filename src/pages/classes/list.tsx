@@ -9,12 +9,223 @@ import {
 } from '@/components/ui/select';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CreateButton } from '@/components/refine-ui/buttons/create';
+import { useTable } from '@refinedev/react-table';
+import { ColumnDef } from '@tanstack/react-table';
+import { DataTable } from '@/components/refine-ui/data-table/data-table';
+import { DataTableSorter } from '@/components/refine-ui/data-table/data-table-sorter';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { useNavigation, useList } from '@refinedev/core';
+import { Subject, User, Class } from '@/types';
+import { cn } from '@/lib/utils';
 
 export const ClassesList = () => {
+  const { edit } = useNavigation();
   const [globalFilter, setGlobalFilter] = useState('');
   const [subjectFilter, setSubjectFilter] = useState<string>('all');
+  const [teacherFilter, setTeacherFilter] = useState<string>('all');
+
+  // Fetch subjects for filter dropdown
+  const { query: subjectsQuery } = useList<Subject>({
+    resource: 'subjects',
+    pagination: {
+      pageSize: 100,
+    },
+  });
+
+  // Fetch teachers (users with role = teacher) for filter dropdown
+  const { query: teachersQuery } = useList<User>({
+    resource: 'users',
+    filters: [
+      {
+        field: 'role',
+        operator: 'eq',
+        value: 'teacher',
+      },
+    ],
+    pagination: {
+      pageSize: 100,
+    },
+  });
+
+  const subjects = subjectsQuery.data?.data || [];
+  const teachers = teachersQuery.data?.data || [];
+
+  const columns = useMemo<ColumnDef<Class>[]>(
+    () => [
+      {
+        id: 'banner',
+        accessorKey: 'bannerUrl',
+        size: 250,
+        header: ({ column }) => (
+          <div className='flex ml-2 font-bold items-center gap-1'>
+            <span>Class Name</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const bannerUrl = getValue<string>();
+          return (
+            <div className='relative flex-shrink-0'>
+              <img
+                src={bannerUrl}
+                alt='Banner preview'
+                className='size-15 object-cover object-right transition-all rounded-sm shadow-lg'
+              />
+            </div>
+          );
+        },
+        filterFn: 'includesString',
+      },
+      {
+        id: 'name',
+        accessorKey: 'name',
+        size: 250,
+        header: ({ column }) => (
+          <div className='flex ml-2 font-bold items-center gap-1'>
+            <span>Class Name</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const name = getValue<string>();
+          return (
+            <div className='ml-2 py-3 text-foreground font-bold'>{name}</div>
+          );
+        },
+        filterFn: 'includesString',
+      },
+      {
+        id: 'status',
+        accessorKey: 'status',
+        size: 120,
+        header: ({ column }) => (
+          <div className='flex font-bold items-center gap-1'>
+            <span>Status</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const status = getValue<string>();
+          return (
+            <Badge
+              variant='secondary'
+              className={cn(
+                'px-2 capitalize py-1 rounded-md text-xs font-semibold',
+                status === 'active'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-gray-400 text-white'
+              )}
+            >
+              {status}
+            </Badge>
+          );
+        },
+      },
+      {
+        id: 'subject',
+        accessorKey: 'subject.name',
+        size: 180,
+        header: ({ column }) => (
+          <div className='flex font-bold items-center gap-1'>
+            <span>Subject</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ row }) => {
+          const subject = row.original.subject;
+          return (
+            <span className='py-10 text-teal-600 font-bold'>
+              {subject?.name || 'N/A'}
+            </span>
+          );
+        },
+      },
+      {
+        id: 'teacher',
+        accessorKey: 'teacher.name',
+        size: 180,
+        header: ({ column }) => (
+          <div className='flex font-bold items-center gap-1'>
+            <span>Teacher</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ row }) => {
+          const teacher = row.original.teacher;
+          return (
+            <span className='text-foreground font-semibold'>
+              {teacher?.name || 'N/A'}
+            </span>
+          );
+        },
+      },
+      {
+        id: 'capacity',
+        accessorKey: 'capacity',
+        size: 100,
+        header: ({ column }) => (
+          <div className='flex font-bold items-center gap-1'>
+            <span>Capacity</span>
+            <DataTableSorter column={column} />
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const capacity = getValue<number>();
+          return (
+            <span className='text-foreground font-medium'>
+              {capacity || '-'}
+            </span>
+          );
+        },
+      },
+    ],
+    []
+  );
+
+  const table = useTable<Class>({
+    columns,
+    refineCoreProps: {
+      resource: 'classes',
+      pagination: {
+        pageSize: 10,
+        mode: 'server',
+      },
+      filters: {
+        permanent: [
+          ...(subjectFilter !== 'all'
+            ? [
+                {
+                  field: 'subjectId',
+                  operator: 'eq' as const,
+                  value: Number(subjectFilter),
+                },
+              ]
+            : []),
+          ...(teacherFilter !== 'all'
+            ? [
+                {
+                  field: 'teacherId',
+                  operator: 'eq' as const,
+                  value: teacherFilter,
+                },
+              ]
+            : []),
+          ...(globalFilter
+            ? [
+                {
+                  field: 'name',
+                  operator: 'contains' as const,
+                  value: globalFilter,
+                },
+              ]
+            : []),
+        ],
+      },
+    },
+  });
 
   const handleSearch = (value: string) => {
     setGlobalFilter(value);
@@ -24,12 +235,9 @@ export const ClassesList = () => {
     setSubjectFilter(value);
   };
 
-  const subjects = [
-    { id: 1, code: 'MATH101', name: 'Calculus I' },
-    { id: 2, code: 'PHY101', name: 'Physics I' },
-    { id: 3, code: 'CHEM101', name: 'Chemistry I' },
-    // Add more subjects as needed
-  ];
+  const handleTeacherFilter = (value: string) => {
+    setTeacherFilter(value);
+  };
 
   return (
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
@@ -39,9 +247,7 @@ export const ClassesList = () => {
           Classes
         </h1>
         <div className='flex flex-col gap-5 lg:flex-row justify-between'>
-          <p className='mt-2'>
-            Quick access to essential metrics and management tools.
-          </p>
+          <p className='mt-2'>Manage and organize all classes.</p>
 
           <div className='flex flex-col gap-3 sm:flex-row sm:gap-2 w-full sm:w-auto'>
             {/* Search Input */}
@@ -64,7 +270,7 @@ export const ClassesList = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value='all'>All Subjects</SelectItem>
-                  {subjects.map((subject) => (
+                  {subjects.map((subject: Subject) => (
                     <SelectItem key={subject.id} value={subject.id.toString()}>
                       {subject.code} - {subject.name}
                     </SelectItem>
@@ -72,19 +278,38 @@ export const ClassesList = () => {
                 </SelectContent>
               </Select>
 
+              <Select value={teacherFilter} onValueChange={handleTeacherFilter}>
+                <SelectTrigger className='flex-1 bg-white text-orange-600 sm:flex-initial sm:w-[180px] h-11'>
+                  <SelectValue placeholder='Filter by teacher' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='all'>All Teachers</SelectItem>
+                  {teachers.map((teacher: User) => (
+                    <SelectItem key={teacher.id} value={teacher.id.toString()}>
+                      {teacher.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               <CreateButton
-                resource='subjects'
+                resource='classes'
                 className='h-9 bg-gradient-orange-diagonal shrink-0'
               />
             </div>
           </div>
         </div>
       </div>
-      <div className='flex items-center justify-center h-[300px]'>
-        <h3 className='text-5xl font-bold text-gray-400/30 tracking-tight'>
-          Class Table
-        </h3>
-      </div>
+
+      <Card className='w-full px-4 relative'>
+        <div className='absolute top-0 rounded-t-lg left-0 right-0 h-2 bg-gradient-orange' />
+        <DataTable
+          table={table}
+          onRowClick={(classItem) => {
+            edit('classes', classItem.id);
+          }}
+        />
+      </Card>
     </ListView>
   );
 };

@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import { Link, useLogout } from '@refinedev/core';
+import { Link, useGetIdentity, useLogout } from '@refinedev/core';
 import { LogOutIcon, UserIcon } from 'lucide-react';
 
 export const Header = () => {
@@ -55,16 +55,25 @@ function MobileHeader() {
 }
 
 const UserDropdown = () => {
+  const { data: user } = useGetIdentity();
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className='rounded-full focus:outline-none'>
-        <UserAvatar />
+      <DropdownMenuTrigger className='rounded-full flex gap-2 items-center focus:outline-none'>
+        <div className='flex flex-col text-right mr-2'>
+          <span className='font-bold text-sm text-orange-600'>
+            {user?.name}
+          </span>
+          <span className='text-xs text-gray-400/80 capitalize'>
+            {user?.role}
+          </span>
+        </div>
+        <UserAvatar user={user} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
         <DropdownMenuItem asChild>
-          <Link to='/profile' className='cursor-pointer'>
+          <Link to={`/users/edit/${user?.id}`} className='cursor-pointer'>
             <UserIcon />
             <span>Profile</span>
           </Link>

@@ -19,17 +19,11 @@ import { Badge } from '@/components/ui/badge';
 
 import { DEPARTMENT_OPTIONS } from '@/constants';
 import { Card } from '@/components/ui/card';
-
-type Subject = {
-  id: number;
-  name: string;
-  code: string;
-  description: string;
-  department: string;
-  createdAt?: string;
-};
+import { useNavigation } from '@refinedev/core';
+import { Subject } from '@/types';
 
 export const SubjectsList = () => {
+  const { edit } = useNavigation();
   const [globalFilter, setGlobalFilter] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState<string>('all');
 
@@ -123,7 +117,7 @@ export const SubjectsList = () => {
       resource: 'subjects',
       pagination: {
         pageSize: 10,
-        mode: 'server', // Added server-side pagination
+        mode: 'server',
       },
       filters: {
         permanent: [
@@ -221,7 +215,12 @@ export const SubjectsList = () => {
 
       <Card className='w-full px-4 relative'>
         <div className='absolute top-0 rounded-t-lg left-0 right-0 h-2 bg-gradient-orange' />
-        <DataTable table={table} />
+        <DataTable
+          table={table}
+          onRowClick={(subject) => {
+            edit('subjects', subject.id);
+          }}
+        />
       </Card>
     </ListView>
   );
