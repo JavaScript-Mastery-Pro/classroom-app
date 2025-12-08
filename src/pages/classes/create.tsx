@@ -44,7 +44,6 @@ export const ClassesCreate = () => {
     refineCoreProps: {
       resource: 'classes',
       action: 'create',
-      redirect: false,
     },
     defaultValues: {
       name: '',
