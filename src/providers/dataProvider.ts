@@ -1,10 +1,23 @@
 import { BACKEND_BASE_URL } from "@/constants";
 import { DataProvider } from "@refinedev/core";
 import axios from "axios";
+import { authProvider } from "./authProvider";
 
 const apiClient = axios.create({
   baseURL: BACKEND_BASE_URL,
   headers: { "Content-Type": "application/json" },
+});
+
+// Interceptor to automatically add role to headers
+apiClient.interceptors.request.use(async (config) => {
+  const permissions = authProvider && typeof authProvider.getPermissions === "function"
+    ? await authProvider.getPermissions()
+    : undefined;
+  
+   if (permissions && typeof permissions === "object" && "role" in permissions) {
+    config.headers["X-User-Role"] = (permissions as { role: string })["role"];
+  }
+  return config;
 });
 
 export const dataProvider: DataProvider = {
