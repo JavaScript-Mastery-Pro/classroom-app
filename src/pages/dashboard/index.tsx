@@ -1,8 +1,7 @@
 import { useGetIdentity } from '@refinedev/core';
-// import { StudentDashboard } from './student';
 import { AdminDashboard } from './admin';
-// import { TeacherDashboard } from './teacher';
 import type { User } from '@/types';
+import { StudentDashboard } from './student';
 
 export const Dashboard = () => {
   const { data: identity, isLoading } = useGetIdentity<User>();
@@ -16,13 +15,9 @@ export const Dashboard = () => {
   }
 
   // Render role-specific dashboard
-  // if (identity?.role === 'student') {
-  //   return <StudentDashboard />;
-  // }
-
-  // if (identity?.role === 'teacher') {
-  //   return <TeacherDashboard />;
-  // }
+  if (identity?.role === 'student') {
+    return <StudentDashboard />;
+  }
 
   // Default to Admin dashboard
   return <AdminDashboard />;

@@ -38,13 +38,12 @@ export const dataProvider: DataProvider = {
           if (field === 'teacherId') params.teacherId = value;
           if (field === 'name') params.searchQuery = value;
         }
+
+        if (resource === 'enrollments') {
+          if (field === 'studentId') params.studentId = value;
+        }
       }
     });
-
-    if (resource === 'classes') {
-      console.log('Classes API - Params being sent:', params);
-      console.log('Classes API - Filters:', filters);
-    }
 
     const response = await apiClient.get(`/${resource}`, { params });
 
@@ -53,7 +52,7 @@ export const dataProvider: DataProvider = {
     const total = response.data.pagination?.total || data.length;
 
         console.log("Resource:", resource);
-        console.log("Fetching list for user resource:", data);
+        console.log("Fetching list for resource:", data);
 
     return { success: true, data, total };
   },

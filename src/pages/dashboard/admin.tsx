@@ -21,28 +21,9 @@ import {
 } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router';
-
-const mockStats = {
-  totalStudents: 148,
-  totalFaculty: 87,
-  totalClasses: 18,
-  totalSubjects: 15,
-};
-
-const studentsPerClassData = [
-  { className: 'Intro to Programming', studentCount: 4 },
-  { className: 'Data Structures', studentCount: 3 },
-  { className: 'Calculus I', studentCount: 5 },
-  { className: 'Linear Algebra', studentCount: 2 },
-  { className: 'General Physics I', studentCount: 3 },
-  { className: 'Quantum Mechanics', studentCount: 1 },
-  { className: 'Organic Chemistry', studentCount: 3 },
-  { className: 'Biochemistry', studentCount: 2 },
-  { className: 'Molecular Biology', studentCount: 3 },
-  { className: 'Genetics', studentCount: 2 },
-  { className: 'Machine Learning', studentCount: 3 },
-  { className: 'Database Systems', studentCount: 3 },
-];
+import { useList } from '@refinedev/core';
+import { Class, User, Subject, UserRole } from '@/types';
+import { useMemo } from 'react';
 
 const mockAnnouncements = [
   {
@@ -54,14 +35,6 @@ const mockAnnouncements = [
     date: '2026-01-15',
   },
 ];
-
-// const classDistributionData = [
-//   { name: 'Computer Science', value: 6 },
-//   { name: 'Mathematics', value: 5 },
-//   { name: 'Physics', value: 3 },
-//   { name: 'Chemistry', value: 2 },
-//   { name: 'Biology', value: 2 },
-// ];
 
 // Vibrant chart colors
 const CHART_COLORS = {
@@ -81,26 +54,85 @@ const VIBRANT_COLORS = [
   CHART_COLORS.chart5,
 ];
 
-const classesPerSubjectData = [
-  { subjectName: 'Data Structures', classCount: 2 },
-  { subjectName: 'Calculus I', classCount: 2 },
-  { subjectName: 'General Physics I', classCount: 2 },
-  { subjectName: 'Intro to CS', classCount: 1 },
-  { subjectName: 'Linear Algebra', classCount: 1 },
-  { subjectName: 'Quantum Mechanics', classCount: 1 },
-  { subjectName: 'Organic Chemistry', classCount: 1 },
-  { subjectName: 'Biochemistry', classCount: 1 },
-  { subjectName: 'Molecular Biology', classCount: 1 },
-  { subjectName: 'Genetics', classCount: 1 },
-  { subjectName: 'Machine Learning', classCount: 1 },
-  { subjectName: 'Database Systems', classCount: 1 },
-  { subjectName: 'Web Development', classCount: 1 },
-  { subjectName: 'Probability & Stats', classCount: 1 },
-  { subjectName: 'Discrete Math', classCount: 1 },
-];
-
 export const AdminDashboard = () => {
   const navigate = useNavigate();
+
+  // Fetch real data
+  const { result: usersData, query: usersQuery } = useList<User>({
+    resource: 'users',
+    pagination: { mode: 'off' },
+  });
+
+  const { result: classesData, query: classesQuery } = useList<Class>({
+    resource: 'classes',
+    pagination: { mode: 'off' },
+  });
+
+  const { result: subjectsData, query: subjectsQuery } = useList<Subject>({
+    resource: 'subjects',
+    pagination: { mode: 'off' },
+  });
+
+  const isLoadingUsers = usersQuery.isLoading;
+  const isLoadingClasses = classesQuery.isLoading;
+  const isLoadingSubjects = subjectsQuery.isLoading;
+
+  // Calculate stats
+  const stats = useMemo(() => {
+    const users = usersData?.data || [];
+    const classes = classesData?.data || [];
+    const subjects = subjectsData?.data || [];
+
+    const totalStudents = users.filter((user: User) => user.role === UserRole.STUDENT).length;
+    const totalFaculty = users.filter(
+      (user: User) => user.role === UserRole.TEACHER || user.role === UserRole.ADMIN
+    ).length;
+
+    return {
+      totalStudents,
+      totalFaculty,
+      totalClasses: classes.length,
+      totalSubjects: subjects.length,
+    };
+  }, [usersData, classesData, subjectsData]);
+
+  // Calculate students per class data
+  const studentsPerClassData = useMemo(() => {
+    const classes = classesData?.data || [];
+    return classes
+      .map((classItem: Class) => ({
+        className: classItem.name,
+        studentCount: classItem.students?.length || 0,
+      }))
+      .sort((a: { studentCount: number }, b: { studentCount: number }) => b.studentCount - a.studentCount)
+      .slice(0, 12); // Top 12 classes
+  }, [classesData]);
+
+  // Calculate classes per subject data
+  const classesPerSubjectData = useMemo(() => {
+    const classes = classesData?.data || [];
+    const subjects = subjectsData?.data || [];
+
+    // Create a map of subjectId to count
+    const subjectCounts = new Map<number, number>();
+    classes.forEach((classItem: Class) => {
+      const count = subjectCounts.get(classItem.subjectId) || 0;
+      subjectCounts.set(classItem.subjectId, count + 1);
+    });
+
+    // Map to subject names
+    return Array.from(subjectCounts.entries())
+      .map(([subjectId, classCount]) => {
+        const subject = subjects.find((s: Subject) => s.id === subjectId);
+        return {
+          subjectName: subject?.name || `Subject ${subjectId}`,
+          classCount,
+        };
+      })
+      .sort((a: { classCount: number }, b: { classCount: number }) => b.classCount - a.classCount);
+  }, [classesData, subjectsData]);
+
+  const isLoading = isLoadingUsers || isLoadingClasses || isLoadingSubjects;
 
   return (
     <div className='container mx-auto pb-8 px-2 sm:px-4'>
@@ -108,7 +140,7 @@ export const AdminDashboard = () => {
         <h1 className='text-4xl font-bold text-foreground tracking-tight'>
           Dashboard
         </h1>
-        <p className='mt-2'>
+        <p className='mt-2 text-muted-foreground'>
           Quick access to essential metrics and management tools.
         </p>
       </div>
@@ -128,7 +160,7 @@ export const AdminDashboard = () => {
               <CardTitle className='text-xl font-bold text-gradient-orange'>
                 Important Announcements
               </CardTitle>
-              <p className='text-sm'>Stay updated with latest information</p>
+              <p className='text-sm text-gray-700'>Stay updated with latest information</p>
             </div>
           </div>
         </CardHeader>
@@ -222,7 +254,7 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardContent className='mt-0'>
             <div className='text-3xl font-bold text-orange-600'>
-              {mockStats.totalStudents}
+              {isLoading ? '...' : stats.totalStudents}
             </div>
             <p className='text-xs text-muted-foreground mt-1'>
               Registered students
@@ -241,10 +273,10 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className='text-3xl font-bold text-teal-500'>
-              {mockStats.totalFaculty}
+              {isLoading ? '...' : stats.totalFaculty}
             </div>
             <p className='text-xs text-muted-foreground mt-1'>
-              Active teachers
+              Active teachers & admins
             </p>
           </CardContent>
         </Card>
@@ -260,7 +292,7 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className='text-3xl font-bold text-teal-700'>
-              {mockStats.totalClasses}
+              {isLoading ? '...' : stats.totalClasses}
             </div>
             <p className='text-xs text-muted-foreground mt-1'>Active classes</p>
           </CardContent>
@@ -277,7 +309,7 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className='text-3xl font-bold text-orange-400'>
-              {mockStats.totalSubjects}
+              {isLoading ? '...' : stats.totalSubjects}
             </div>
             <p className='text-xs text-muted-foreground mt-1'>
               Available subjects
@@ -295,38 +327,48 @@ export const AdminDashboard = () => {
               Students Enrolled Per Class
             </CardTitle>
             <p className='text-sm text-muted-foreground'>
-              Number of students in each class
+              Number of students in each class (Top 12)
             </p>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width='100%' height={400}>
-              <BarChart data={studentsPerClassData} layout='vertical'>
-                <CartesianGrid
-                  strokeDasharray='3 3'
-                  className='stroke-gray-200'
-                />
-                <XAxis type='number' className='text-xs text-gray-900' />
-                <YAxis
-                  dataKey='className'
-                  type='category'
-                  className='text-[11px] text-gray-900'
-                  width={150}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '6px',
-                    color: '#171717',
-                  }}
-                />
-                <Bar
-                  dataKey='studentCount'
-                  fill={CHART_COLORS.chart1}
-                  name='Students'
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            {isLoading ? (
+              <div className='h-[400px] flex items-center justify-center text-muted-foreground'>
+                Loading chart data...
+              </div>
+            ) : studentsPerClassData.length === 0 ? (
+              <div className='h-[400px] flex items-center justify-center text-muted-foreground'>
+                No class data available
+              </div>
+            ) : (
+              <ResponsiveContainer width='100%' height={400}>
+                <BarChart data={studentsPerClassData} layout='vertical'>
+                  <CartesianGrid
+                    strokeDasharray='3 3'
+                    className='stroke-gray-200'
+                  />
+                  <XAxis type='number' className='text-xs text-gray-900' />
+                  <YAxis
+                    dataKey='className'
+                    type='category'
+                    className='text-[11px] text-gray-900'
+                    width={150}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#ffffff',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '6px',
+                      color: '#171717',
+                    }}
+                  />
+                  <Bar
+                    dataKey='studentCount'
+                    fill={CHART_COLORS.chart1}
+                    name='Students'
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </CardContent>
         </Card>
 
@@ -341,90 +383,53 @@ export const AdminDashboard = () => {
             </p>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width='100%' height={400}>
-              <PieChart>
-                <Pie
-                  data={classesPerSubjectData}
-                  cx='50%'
-                  cy='50%'
-                  labelLine={false}
-                  label={({ subjectName, classCount }) =>
-                    `${subjectName} (${classCount})`
-                  }
-                  innerRadius={70}
-                  outerRadius={120}
-                  dataKey='classCount'
-                  className='text-[11px]'
-                  nameKey='subjectName'
-                >
-                  {classesPerSubjectData.map((_, index) => {
-                    return (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={VIBRANT_COLORS[index % VIBRANT_COLORS.length]}
-                      />
-                    );
-                  })}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '6px',
-                    color: '#171717',
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+            {isLoading ? (
+              <div className='h-[400px] flex items-center justify-center text-muted-foreground'>
+                Loading chart data...
+              </div>
+            ) : classesPerSubjectData.length === 0 ? (
+              <div className='h-[400px] flex items-center justify-center text-muted-foreground'>
+                No subject data available
+              </div>
+            ) : (
+              <ResponsiveContainer width='100%' height={400}>
+                <PieChart>
+                  <Pie
+                    data={classesPerSubjectData}
+                    cx='50%'
+                    cy='50%'
+                    labelLine={false}
+                    label={({ subjectName, classCount }) =>
+                      `${subjectName} (${classCount})`
+                    }
+                    innerRadius={70}
+                    outerRadius={120}
+                    dataKey='classCount'
+                    className='text-[11px]'
+                    nameKey='subjectName'
+                  >
+                    {classesPerSubjectData.map((_, index) => {
+                      return (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={VIBRANT_COLORS[index % VIBRANT_COLORS.length]}
+                        />
+                      );
+                    })}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#ffffff',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '6px',
+                      color: '#171717',
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </CardContent>
         </Card>
-
-        {/* Class Distribution by Department */}
-        {/* <Card className='border border-border bg-card'>
-          <CardHeader>
-            <CardTitle className='text-card-foreground'>
-              Class Distribution by Department
-            </CardTitle>
-            <p className='text-sm text-muted-foreground'>
-              Number of classes per department
-            </p>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
-              <PieChart>
-                <Pie
-                  data={classDistributionData}
-                  cx='50%'
-                  cy='50%'
-                  labelLine={false}
-                  label={({ name, percent }) =>
-                    `${name} ${(percent * 100).toFixed(0)}%`
-                  }
-                  outerRadius={80}
-                  className='text-[11px]'
-                  dataKey='value'
-                >
-                  {classDistributionData.map((entry, index) => {
-                    return (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={VIBRANT_COLORS[index % VIBRANT_COLORS.length]}
-                      />
-                    );
-                  })}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '6px',
-                    color: '#171717',
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card> */}
       </div>
     </div>
   );
