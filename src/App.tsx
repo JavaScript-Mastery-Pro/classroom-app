@@ -16,7 +16,6 @@ import { Login } from './pages/login';
 import { Register } from './pages/register';
 import { Dashboard } from './pages/dashboard';
 import { authProvider } from './providers/authProvider';
-import { ProfilePage } from './pages/profile';
 import { UsersList } from './pages/users/list';
 import { SubjectsList } from './pages/subjects/list';
 import { SubjectsCreate } from './pages/subjects/create';
@@ -28,6 +27,7 @@ import { SubjectsEdit } from './pages/subjects/edit';
 import { ClassesCreate } from './pages/classes/create';
 import { ClassesEdit } from './pages/classes/edit';
 import { ClassesShow } from './pages/classes/show';
+import { BookOpen, GraduationCap, Home, Layers, User } from 'lucide-react';
 
 function App() {
   return (
@@ -44,7 +44,7 @@ function App() {
                 list: '/dashboard',
                 meta: {
                   label: 'Dashboard',
-                  icon: '📊',
+                  icon: <Home className='text-gray-200' />,
                 },
               },
               {
@@ -52,7 +52,7 @@ function App() {
                 list: '/enrollments',
                 meta: {
                   label: 'Join Classes',
-                  icon: '🎓',
+                  icon: <Layers className='text-gray-200' />,
                 },
               },
               {
@@ -62,7 +62,7 @@ function App() {
                 show: '/users/show/:id',
                 meta: {
                   label: 'Faculty',
-                  icon: '👨‍🏫',
+                  icon: <User className='text-gray-200' />,
                 },
               },
               {
@@ -73,7 +73,7 @@ function App() {
                 show: '/subjects/show/:id',
                 meta: {
                   label: 'Subjects',
-                  icon: '📚',
+                  icon: <BookOpen className='text-gray-200' />,
                 },
               },
               {
@@ -84,7 +84,7 @@ function App() {
                 show: '/classes/show/:id',
                 meta: {
                   label: 'Classes',
-                  icon: '🏫',
+                  icon: <GraduationCap className='text-gray-200' />,
                 },
               },
             ]}
@@ -119,8 +119,6 @@ function App() {
                 />
 
                 <Route path='/dashboard' element={<Dashboard />} />
-
-                <Route path='/profile' element={<ProfilePage />} />
 
                 <Route path='users'>
                   <Route index element={<UsersList />} />

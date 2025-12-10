@@ -43,16 +43,6 @@ export const DEPARTMENTS = [
   'Law',
 ] as const;
 
-export const mockAnnouncements = [
-    {
-      id: 1,
-      title: 'How to join a class',
-      message:
-        'Click on any class card to view details, then click the "Join Class" button and enter the class code. You can also join directly from the card by clicking the join button.',
-      priority: 'high',
-      date: '2026-01-15',
-    },
-  ];
 
 export const DEPARTMENT_OPTIONS = DEPARTMENTS.map((dept) => ({
   value: dept,

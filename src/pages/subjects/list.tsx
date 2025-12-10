@@ -17,7 +17,6 @@ import { DataTable } from '@/components/refine-ui/data-table/data-table';
 import { Badge } from '@/components/ui/badge';
 
 import { DEPARTMENT_OPTIONS } from '@/constants';
-import { Card } from '@/components/ui/card';
 import { useNavigation } from '@refinedev/core';
 import { Subject } from '@/types';
 
@@ -38,7 +37,7 @@ export const SubjectsList = () => {
         cell: ({ getValue }) => {
           const value = getValue<string>();
           return (
-            <Badge className='ml-2 my-2 text-sm bg-orange-50 text-orange-700 border-2 border-orange-500/50 font-bold'>
+            <Badge className='ml-2 my-2 text-sm bg-orange-100 text-orange-600 border-2 border-orange-500/10 font-bold'>
               {value}
             </Badge>
           );
@@ -142,14 +141,12 @@ export const SubjectsList = () => {
   return (
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
-      <div className='space-y-4 mb-6'>
-        <h1 className='text-4xl font-bold text-foreground tracking-tight'>
+      <div className='space-y-4 mb-2'>
+        <h1 className='text-3xl font-bold text-foreground tracking-tight'>
           Subjects
         </h1>
         <div className='flex flex-col gap-5 lg:flex-row justify-between'>
-          <p className='mt-2'>
-            Quick access to essential metrics and management tools.
-          </p>
+          <p>Quick access to essential metrics and management tools.</p>
 
           <div className='flex flex-col gap-3 sm:flex-row sm:gap-2 w-full sm:w-auto'>
             {/* Search Input */}
@@ -185,22 +182,19 @@ export const SubjectsList = () => {
 
               <CreateButton
                 resource='subjects'
-                className='h-9 bg-gradient-orange-diagonal shrink-0'
+                className='h-9 bg-purple-500 shrink-0'
               />
             </div>
           </div>
         </div>
       </div>
 
-      <Card className='w-full px-4 relative'>
-        <div className='absolute top-0 rounded-t-lg left-0 right-0 h-2 bg-gradient-orange' />
-        <DataTable
-          table={table}
-          onRowClick={(subject) => {
-            edit('subjects', subject.id);
-          }}
-        />
-      </Card>
+      <DataTable
+        table={table}
+        onRowClick={(subject) => {
+          edit('subjects', subject.id);
+        }}
+      />
     </ListView>
   );
 };

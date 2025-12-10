@@ -75,15 +75,13 @@ export function Sidebar() {
       <SidebarHeader />
       <ShadcnSidebarContent
         className={cn(
-          'transition-discrete overflow-hidden',
+          'transition-discrete bg-gray-900 overflow-hidden',
           'duration-200',
           'flex',
           'flex-col',
           'gap-2',
           'pt-4',
           'pb-2',
-          'border-r',
-          'border-border',
           {
             'px-3': open,
             'px-1': !open,
@@ -250,10 +248,11 @@ function SidebarHeader() {
   return (
     <ShadcnSidebarHeader
       className={cn(
+        'bg-gray-900',
         'p-0',
         'h-16',
         'border-b',
-        'border-border',
+        'border-gray-700/40',
         'flex-row',
         'items-center',
         'justify-between',
@@ -281,6 +280,7 @@ function SidebarHeader() {
 
         <h2
           className={cn(
+            'text-white',
             'text-base',
             'font-bold',
             'transition-opacity',
@@ -352,15 +352,13 @@ function SidebarButton({
     <>
       <ItemIcon icon={item.meta?.icon ?? item.icon} isSelected={isSelected} />
       <span
-        className={cn('tracking-[-0.00875rem]', {
+        className={cn('tracking-[-0.00875rem] text-white', {
           'flex-1': rightIcon,
           'text-left': rightIcon,
           'line-clamp-1': !rightIcon,
           truncate: !rightIcon,
           'font-normal': !isSelected,
           'font-semibold': isSelected,
-          'text-sidebar-primary-foreground': isSelected,
-          'text-foreground': !isSelected,
         })}
       >
         {getDisplayName(item)}
@@ -377,10 +375,11 @@ function SidebarButton({
       className={cn(
         'flex w-full items-center justify-start gap-2 py-2 !px-3 text-sm',
         {
-          'bg-sidebar-primary': isSelected,
-          'hover:!bg-sidebar-primary/90': isSelected,
-          'text-sidebar-primary-foreground': isSelected,
-          'hover:text-sidebar-primary-foreground': isSelected,
+          'hover:bg-gray-700/40': !isSelected,
+          'bg-gray-700': isSelected,
+          'hover:!bg-gray-700': isSelected,
+          'text-bg-gray-900': isSelected,
+          'hover:text-bg-gray-900': isSelected,
         },
         className
       )}

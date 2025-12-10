@@ -247,19 +247,17 @@ export const ClassesEdit = () => {
     <EditView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
 
-      <h1 className='text-4xl font-bold text-foreground tracking-tight'>
+      <h1 className='text-3xl font-bold text-foreground tracking-tight'>
         Edit Class
       </h1>
       <div className='flex flex-col gap-5 md:flex-row justify-between'>
-        <p className='mt-2'>
-          Provide the required information below to update.
-        </p>
+        <p>Provide the required information below to update.</p>
         <div className='flex flex-col md:flex-row max-sm:w-full border gap-2'>
           <Button className='max-sm:w-full' onClick={() => back()}>
             Go Back
           </Button>
           <Button
-            className='bg-gradient-teal cursor-pointer'
+            className='bg-orange-600 cursor-pointer'
             rel='noopener noreferrer'
             onClick={() => show('classes', id as string)}
           >
@@ -271,9 +269,7 @@ export const ClassesEdit = () => {
       <Separator />
 
       <div className='my-4 flex items-center'>
-        <Card className='max-w-4xl gap-2 w-full mx-auto relative overflow-hidden bg-gray-0 border-0'>
-          <div className='absolute top-0 left-0 right-0 h-2 bg-gradient-orange' />
-
+        <Card className='max-w-3xl gap-2 w-full mx-auto relative overflow-hidden border-gray-200 border shadow-sm'>
           <CardHeader className='relative z-10'>
             <CardTitle className='text-2xl pb-0 font-bold text-gradient-orange'>
               {classData?.name}
@@ -575,7 +571,7 @@ export const ClassesEdit = () => {
                   <Button
                     type='submit'
                     size='lg'
-                    className='max-sm:w-full h-12 font-semibold text-white shadow-lg transition-all duration-300 cursor-pointer bg-gradient-orange-diagonal'
+                    className='max-sm:w-full h-12 font-semibold text-white shadow-lg transition-all duration-300 cursor-pointer bg-purple-500'
                     disabled={isSubmitting || isPending}
                   >
                     {isSubmitting ? (

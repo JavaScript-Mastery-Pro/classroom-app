@@ -141,7 +141,7 @@ export const ClassCard = ({
               disabled={
                 (classItem?.students?.length ?? 0) >= (classItem.capacity || 0)
               }
-              className='w-full mt-4 cursor-pointer bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold shadow-md hover:shadow-lg transition-all disabled:from-gray-400 disabled:to-gray-600 disabled:text-gray-500'
+              className='w-full mt-4 rounded-lg cursor-pointer bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 font-semibold shadow-md hover:shadow-lg transition-all disabled:from-gray-400 disabled:to-gray-600 disabled:text-gray-500'
             >
               Join Class {classItem?.students?.length}
             </Button>

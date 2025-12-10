@@ -115,7 +115,7 @@ export const ScheduleInput = ({ schedules, onChange }: ScheduleInputProps) => {
           <Button
             type='button'
             onClick={handleAddSchedule}
-            className='h-10 lg:min-w-32 bg-gradient-teal hover:bg-orange-600'
+            className='h-10 lg:min-w-32 cursor-pointer'
           >
             <Plus className='w-4 h-4 mr-1' />
             Add

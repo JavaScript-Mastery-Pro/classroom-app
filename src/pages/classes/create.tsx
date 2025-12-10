@@ -144,22 +144,18 @@ export const ClassesCreate = () => {
     <CreateView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
 
-      <h1 className='text-4xl font-bold text-foreground tracking-tight'>
+      <h1 className='text-3xl font-bold text-foreground tracking-tight'>
         Create a Class
       </h1>
       <div className='flex flex-col gap-5 md:flex-row justify-between'>
-        <p className='mt-2'>
-          Provide the required information below to add a class.
-        </p>
+        <p>Provide the required information below to add a class.</p>
         <Button onClick={() => back()}>Go Back</Button>
       </div>
 
       <Separator />
 
       <div className='my-4 flex items-center'>
-        <Card className='max-w-3xl gap-2 w-full mx-auto relative overflow-hidden bg-gray-0 border-0'>
-          <div className='absolute top-0 left-0 right-0 h-2 bg-gradient-orange' />
-
+        <Card className='max-w-3xl gap-2 w-full mx-auto relative overflow-hidden border border-gray-200 shadow-sm'>
           <CardHeader className='relative z-10'>
             <CardTitle className='text-2xl pb-0 font-bold text-gradient-orange'>
               Fill out the class form
@@ -363,7 +359,7 @@ export const ClassesCreate = () => {
                 <Button
                   type='submit'
                   size='lg'
-                  className='w-full mt-2 h-12 font-semibold text-white shadow-lg cursor-pointer bg-gradient-orange-diagonal'
+                  className='w-full mt-2 h-12 font-semibold text-white shadow-lg cursor-pointer bg-purple-500'
                   disabled={isSubmitting || subjectsLoading || teachersLoading}
                 >
                   {isSubmitting ? (

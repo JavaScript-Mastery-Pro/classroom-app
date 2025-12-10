@@ -282,7 +282,7 @@ export const SignUpForm = () => {
               <Button
                 type='submit'
                 size='lg'
-                className='w-full mt-2 h-12 font-semibold text-white shadow-lg cursor-pointer bg-gradient-orange-diagonal'
+                className='w-full mt-2 h-12 font-semibold text-white shadow-lg cursor-pointer bg-purple-500'
                 disabled={form.formState.isSubmitting || isLoading}
               >
                 {form.formState.isSubmitting || isLoading

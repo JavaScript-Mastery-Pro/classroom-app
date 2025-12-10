@@ -136,7 +136,7 @@ export const SignInForm = () => {
               <Button
                 type='submit'
                 size='lg'
-                className='w-full mt-7 h-12 font-semibold text-white shadow-lg cursor-pointer bg-gradient-orange-diagonal'
+                className='w-full mt-7 h-12 font-semibold text-white shadow-lg cursor-pointer bg-purple-500'
                 disabled={form.formState.isSubmitting || isPending}
               >
                 {form.formState.isSubmitting || isPending

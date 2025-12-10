@@ -18,7 +18,6 @@ import { DataTable } from '@/components/refine-ui/data-table/data-table';
 import { cn } from '@/lib/utils';
 import { AdvancedImage } from '@cloudinary/react';
 import { profilePhoto } from '@/lib/cloudinary';
-import { Card } from '@/components/ui/card';
 import { useNavigation } from '@refinedev/core';
 
 export const UsersList = () => {
@@ -148,7 +147,7 @@ export const UsersList = () => {
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
       <div className='space-y-4 mb-6'>
-        <h1 className='text-4xl font-bold text-foreground tracking-tight'>
+        <h1 className='text-3xl font-bold text-foreground tracking-tight'>
           Faculty
         </h1>
 
@@ -187,15 +186,12 @@ export const UsersList = () => {
         </div>
       </div>
 
-      <Card className='w-full px-4 relative'>
-        <div className='absolute top-0 rounded-t-lg left-0 right-0 h-2 bg-gradient-orange' />
-        <DataTable
-          table={table}
-          onRowClick={(user) => {
-            edit('users', user.id);
-          }}
-        />
-      </Card>
+      <DataTable
+        table={table}
+        onRowClick={(user) => {
+          edit('users', user.id);
+        }}
+      />
     </ListView>
   );
 };

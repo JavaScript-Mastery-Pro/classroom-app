@@ -15,7 +15,6 @@ import { useTable } from '@refinedev/react-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/refine-ui/data-table/data-table';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
 import { useNavigation, useList } from '@refinedev/core';
 import { Subject, User, Class } from '@/types';
 import { cn } from '@/lib/utils';
@@ -124,7 +123,7 @@ export const ClassesList = () => {
         cell: ({ row }) => {
           const subject = row.original.subject;
           return (
-            <span className='py-10 text-teal-600 font-bold'>
+            <span className='py-10 text-orange-600 font-bold'>
               {subject?.name}
             </span>
           );
@@ -210,12 +209,12 @@ export const ClassesList = () => {
     <ListView className='container mx-auto pb-8 px-2 sm:px-4'>
       <Breadcrumb />
 
-      <div className='space-y-4 mb-6'>
-        <h1 className='text-4xl font-bold text-foreground tracking-tight'>
+      <div className='space-y-4 mb-2'>
+        <h1 className='text-3xl font-bold text-foreground tracking-tight'>
           Classes
         </h1>
         <div className='flex flex-col gap-5 lg:flex-row justify-between'>
-          <p className='mt-2'>Manage and organize all classes.</p>
+          <p>Manage and organize all classes.</p>
 
           <div className='flex flex-col gap-3 sm:flex-row sm:gap-2 w-full sm:w-auto'>
             {/* Search Input */}
@@ -262,22 +261,19 @@ export const ClassesList = () => {
 
               <CreateButton
                 resource='classes'
-                className='h-9 bg-gradient-orange-diagonal shrink-0'
+                className='h-9 bg-purple-500 shrink-0'
               />
             </div>
           </div>
         </div>
       </div>
 
-      <Card className='w-full px-4 relative'>
-        <div className='absolute top-0 rounded-t-lg left-0 right-0 h-2 bg-gradient-orange' />
-        <DataTable
-          table={table}
-          onRowClick={(classItem) => {
-            edit('classes', classItem.id);
-          }}
-        />
-      </Card>
+      <DataTable
+        table={table}
+        onRowClick={(classItem) => {
+          edit('classes', classItem.id);
+        }}
+      />
     </ListView>
   );
 };

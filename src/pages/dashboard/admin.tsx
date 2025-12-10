@@ -25,6 +25,27 @@ import { useList } from '@refinedev/core';
 import { Class, User, Subject, UserRole } from '@/types';
 import { useMemo } from 'react';
 
+const QUICK_ACTIONS = [
+  {
+    title: 'Add Subject',
+    description: 'Create a new subject',
+    icon: Building2,
+    link: '/subjects/create',
+  },
+  {
+    title: 'Add Class',
+    description: 'Create a new class',
+    icon: BookOpen,
+    link: '/classes/create',
+  },
+  {
+    title: 'Join Class',
+    description: 'Join a class using code',
+    icon: Users,
+    link: '/join-classes',
+  },
+];
+
 const mockAnnouncements = [
   {
     id: 1,
@@ -38,20 +59,22 @@ const mockAnnouncements = [
 
 // Vibrant chart colors
 const CHART_COLORS = {
-  chart1: '#f54900', // bright orange
-  chart2: '#009689', // teal
-  chart3: '#104e64', // dark blue
-  chart4: '#ffb900', // yellow
-  chart5: '#fe9a00', // orange-yellow
+  chart1: '#7F56D9',
+  chart2: '#9E77ED',
+  chart3: '#B692F6',
+  chart4: '#6C49BA',
+  chart5: '#6033C5',
+  chart6: '#4B2F8A',
 };
 
 // Array of colors for cycling through charts
-const VIBRANT_COLORS = [
+const COLORS = [
   CHART_COLORS.chart1,
   CHART_COLORS.chart2,
   CHART_COLORS.chart3,
   CHART_COLORS.chart4,
   CHART_COLORS.chart5,
+  CHART_COLORS.chart6,
 ];
 
 export const AdminDashboard = () => {
@@ -83,9 +106,12 @@ export const AdminDashboard = () => {
     const classes = classesData?.data || [];
     const subjects = subjectsData?.data || [];
 
-    const totalStudents = users.filter((user: User) => user.role === UserRole.STUDENT).length;
+    const totalStudents = users.filter(
+      (user: User) => user.role === UserRole.STUDENT
+    ).length;
     const totalFaculty = users.filter(
-      (user: User) => user.role === UserRole.TEACHER || user.role === UserRole.ADMIN
+      (user: User) =>
+        user.role === UserRole.TEACHER || user.role === UserRole.ADMIN
     ).length;
 
     return {
@@ -104,7 +130,10 @@ export const AdminDashboard = () => {
         className: classItem.name,
         studentCount: classItem.students?.length || 0,
       }))
-      .sort((a: { studentCount: number }, b: { studentCount: number }) => b.studentCount - a.studentCount)
+      .sort(
+        (a: { studentCount: number }, b: { studentCount: number }) =>
+          b.studentCount - a.studentCount
+      )
       .slice(0, 12); // Top 12 classes
   }, [classesData]);
 
@@ -129,39 +158,36 @@ export const AdminDashboard = () => {
           classCount,
         };
       })
-      .sort((a: { classCount: number }, b: { classCount: number }) => b.classCount - a.classCount);
+      .sort(
+        (a: { classCount: number }, b: { classCount: number }) =>
+          b.classCount - a.classCount
+      );
   }, [classesData, subjectsData]);
 
   const isLoading = isLoadingUsers || isLoadingClasses || isLoadingSubjects;
 
   return (
-    <div className='container mx-auto pb-8 px-2 sm:px-4'>
-      <div className='mb-8'>
-        <h1 className='text-4xl font-bold text-foreground tracking-tight'>
-          Dashboard
-        </h1>
-        <p className='mt-2 text-muted-foreground'>
+    <div className='container mx-auto pb-6 px-2 sm:px-4'>
+      <div className='mb-5'>
+        <h1 className='text-3xl font-semibold text-gray-900'>Dashboard</h1>
+        <p className='mt-2 text-gray-700'>
           Quick access to essential metrics and management tools.
         </p>
       </div>
 
       {/* Announcements Section */}
-      <Card className='border-2 border-orange-600/30 bg-gradient-to-br from-orange-50 to-orange-100 shadow-md transition-shadow duration-300 mb-8 relative overflow-hidden'>
-        {/* Decorative corner accent */}
-        <div className='absolute top-0 right-0 w-32 h-32 bg-orange-600/10 rounded-bl-full' />
-        <div className='absolute bottom-0 left-0 w-24 h-24 bg-orange-500/10 rounded-tr-full' />
-
-        <CardHeader className='relative z-10'>
-          <div className='flex items-center space-x-3'>
-            <div className='bg-gradient-orange p-3 rounded-lg shadow-md'>
-              <Megaphone className='h-6 w-6 text-white' />
-            </div>
-            <div>
-              <CardTitle className='text-xl font-bold text-gradient-orange'>
-                Important Announcements
-              </CardTitle>
-              <p className='text-sm text-gray-700'>Stay updated with latest information</p>
-            </div>
+      <Card className='border-2 shadow-none border-orange-600/30 bg-orange-100 mb-7 relative overflow-hidden'>
+        <CardHeader className='flex items-center space-x-2'>
+          <div className='bg-gradient-orange p-3 rounded-lg shadow-md'>
+            <Megaphone className='h-5 w-5 text-white' />
+          </div>
+          <div>
+            <CardTitle className='text-lg font-bold text-gradient-orange'>
+              Important Announcements
+            </CardTitle>
+            <p className='text-sm text-gray-700'>
+              Stay updated with latest information
+            </p>
           </div>
         </CardHeader>
         <CardContent className='space-y-3 relative z-10'>
@@ -173,7 +199,7 @@ export const AdminDashboard = () => {
               <div className='flex items-start justify-between gap-3'>
                 <div className='flex-1'>
                   <div className='flex items-center gap-2 mb-2'>
-                    <h3 className='font-bold text-teal-700 text-base'>
+                    <h3 className='font-bold text-gray-700 text-base'>
                       {announcement.title}
                     </h3>
                     {announcement.priority === 'high' && (
@@ -185,11 +211,6 @@ export const AdminDashboard = () => {
                   <p className='text-sm text-gray-900 leading-relaxed mb-2'>
                     {announcement.message}
                   </p>
-                  <div className='flex items-center gap-2 text-xs text-gray-900/60'>
-                    <span className='font-medium'>
-                      {new Date(announcement.date).toLocaleDateString()}
-                    </span>
-                  </div>
                 </div>
                 {announcement.priority === 'high' && (
                   <div className='bg-gradient-orange-light p-2 rounded-lg'>
@@ -203,120 +224,90 @@ export const AdminDashboard = () => {
       </Card>
 
       {/* Quick Actions */}
-      <Card className='border border-border bg-card mb-8'>
-        <CardHeader>
-          <CardTitle className='text-card-foreground'>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+      <section className='grid mb-7 grid-cols-1 md:grid-cols-3 gap-5'>
+        {QUICK_ACTIONS.map((action) => (
           <Button
-            onClick={() => navigate('/subjects/create')}
+            onClick={() => navigate(action.link)}
             size='lg'
-            className='w-full cursor-pointer justify-start h-12 font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-orange-diagonal'
+            className='w-full border bg-orange-100/20 border-gray-200 cursor-pointer h-20 font-medium text-gray-900 shadow-sm hover:shadow-md transition-all duration-300 hover:bg-orange-100/20 hover:border-orange-500/30 rounded-xl'
           >
-            <div className='mr-2 p-1.5 rounded-md bg-white/20'>
-              <Building2 className='h-4 w-4' />
+            <div className='mr-2 p-3 rounded-full bg-orange-100'>
+              <action.icon className='h-4 w-4' />
             </div>
-            Add Subject
-          </Button>
-          <Button
-            onClick={() => navigate('/classes/create')}
-            size='lg'
-            className='w-full cursor-pointer justify-start h-12 font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-teal'
-          >
-            <div className='mr-2 p-1.5 rounded-md bg-white/20'>
-              <BookOpen className='h-4 w-4' />
+            <div className='flex text-start w-full flex-start flex-col'>
+              <p className='font-bold text-gray-700 text-base'>
+                {action.title}
+              </p>
+              <p className='text-gray-600 text-sm'>{action.description}</p>
             </div>
-            Add Class
           </Button>
-          <Button
-            onClick={() => navigate('/join-classes')}
-            size='lg'
-            className='w-full cursor-pointer justify-start h-12 font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-gradient-orange-light2'
-          >
-            <div className='mr-2 p-1.5 rounded-md bg-white/20'>
-              <Users className='h-4 w-4' />
-            </div>
-            Join Class
-          </Button>
-        </CardContent>
-      </Card>
+        ))}
+      </section>
 
-      {/* Quick Stats */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
-        <Card className='border flex flex-col gap-1 border-border bg-card'>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-base font-medium text-card-foreground'>
+      {/* Stats */}
+      <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-7'>
+        <Card className='flex flex-col gap-1 border border-gray-200'>
+          <CardHeader className='flex flex-row items-center justify-between'>
+            <CardTitle className='ont-bold text-gray-700 text-base'>
               Total Students
             </CardTitle>
-            <div className='p-2 rounded-lg bg-orange-600/10'>
-              <GraduationCap className='h-4 w-4 text-orange-600' />
-            </div>
+            <GraduationCap className='h-6 w-6 text-orange-500' />
           </CardHeader>
-          <CardContent className='mt-0'>
-            <div className='text-3xl font-bold text-orange-600'>
+          <CardContent className='mt-1'>
+            <div className='text-4xl font-bold text-gray-900'>
               {isLoading ? '...' : stats.totalStudents}
             </div>
-            <p className='text-xs text-muted-foreground mt-1'>
-              Registered students
-            </p>
+            <p className='text-xs text-gray-700 mt-2'>Registered students</p>
           </CardContent>
         </Card>
 
-        <Card className='border flex flex-col gap-1 border-border bg-card'>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-base font-medium text-card-foreground'>
+        <Card className='flex flex-col gap-1 border border-gray-200'>
+          <CardHeader className='flex flex-row items-center justify-between'>
+            <CardTitle className='ont-bold text-gray-700 text-base'>
               Faculty
             </CardTitle>
-            <div className='p-2 rounded-lg bg-teal-500/10'>
-              <Users className='h-4 w-4 text-teal-500' />
-            </div>
+            <Users className='h-6 w-6 text-orange-500' />
           </CardHeader>
-          <CardContent>
-            <div className='text-3xl font-bold text-teal-500'>
+          <CardContent className='mt-1'>
+            <div className='text-4xl font-bold text-gray-900'>
               {isLoading ? '...' : stats.totalFaculty}
             </div>
-            <p className='text-xs text-muted-foreground mt-1'>
+            <p className='text-xs text-gray-700 mt-2'>
               Active teachers & admins
             </p>
           </CardContent>
         </Card>
 
-        <Card className='border flex flex-col gap-1 border-border bg-card'>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-base font-medium text-card-foreground'>
+        <Card className='flex flex-col gap-1 border border-gray-200'>
+          <CardHeader className='flex flex-row items-center justify-between'>
+            <CardTitle className='ont-bold text-gray-700 text-base'>
               Classes
             </CardTitle>
-            <div className='p-2 rounded-lg bg-teal-700/10'>
-              <BookOpen className='h-4 w-4 text-teal-700' />
-            </div>
+            <BookOpen className='h-6 w-6 text-orange-500' />
           </CardHeader>
-          <CardContent>
-            <div className='text-3xl font-bold text-teal-700'>
+          <CardContent className='mt-1'>
+            <div className='text-4xl font-bold text-gray-900'>
               {isLoading ? '...' : stats.totalClasses}
             </div>
-            <p className='text-xs text-muted-foreground mt-1'>Active classes</p>
+            <p className='text-xs text-gray-700 mt-2'>Active classes</p>
           </CardContent>
         </Card>
 
-        <Card className='border flex flex-col gap-1 border-border bg-card'>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-base font-medium text-card-foreground'>
+        <Card className='flex flex-col gap-1 border border-gray-200'>
+          <CardHeader className='flex flex-row items-center justify-between'>
+            <CardTitle className='ont-bold text-gray-700 text-base'>
               Subjects
             </CardTitle>
-            <div className='p-2 rounded-lg bg-orange-400/10'>
-              <Building2 className='h-4 w-4 text-orange-400' />
-            </div>
+            <Building2 className='h-6 w-6 text-orange-500' />
           </CardHeader>
-          <CardContent>
-            <div className='text-3xl font-bold text-orange-400'>
+          <CardContent className='mt-1'>
+            <div className='text-4xl font-bold text-gray-900'>
               {isLoading ? '...' : stats.totalSubjects}
             </div>
-            <p className='text-xs text-muted-foreground mt-1'>
-              Available subjects
-            </p>
+            <p className='text-xs text-gray-700 mt-2'>Available subjects</p>
           </CardContent>
         </Card>
-      </div>
+      </section>
 
       {/* Charts Section */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
@@ -375,10 +366,8 @@ export const AdminDashboard = () => {
         {/* Classes Per Subject */}
         <Card className='border border-border bg-card'>
           <CardHeader>
-            <CardTitle className='text-card-foreground'>
-              Classes Per Subject
-            </CardTitle>
-            <p className='text-sm text-muted-foreground'>
+            <CardTitle className='text-gray-900'>Classes Per Subject</CardTitle>
+            <p className='text-sm text-gray-700'>
               Number of classes offered for each subject
             </p>
           </CardHeader>
@@ -412,7 +401,7 @@ export const AdminDashboard = () => {
                       return (
                         <Cell
                           key={`cell-${index}`}
-                          fill={VIBRANT_COLORS[index % VIBRANT_COLORS.length]}
+                          fill={COLORS[index % COLORS.length]}
                         />
                       );
                     })}
